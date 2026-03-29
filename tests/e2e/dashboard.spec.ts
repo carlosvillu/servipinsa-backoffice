@@ -192,7 +192,7 @@ test.describe('Dashboard - Listado de partes', () => {
     await page.goto('/')
 
     await page.getByRole('link', { name: 'Cliente Detalle' }).first().click()
-    expect(page.url()).toContain(`/work-orders/${orderId}`)
+    await expect(page).toHaveURL(new RegExp(`/work-orders/${orderId}`), { timeout: 10000 })
   })
 
   test('botón Nuevo Parte navega a creación', async ({

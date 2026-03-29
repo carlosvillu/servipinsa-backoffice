@@ -6,22 +6,28 @@ import {
   type WorkOrderFormData,
 } from '~/schemas/workOrder'
 
-export function useWorkOrderForm() {
+type UseWorkOrderFormOptions = {
+  defaultValues?: Partial<WorkOrderFormData>
+}
+
+const emptyDefaults: WorkOrderFormData = {
+  client: '',
+  address: '',
+  carNumber: '',
+  driverOut: '',
+  driverReturn: '',
+  tasks: [{ description: '', startTime: '', endTime: '' }],
+  labor: [{ technicianName: '', entryTime: '', exitTime: '' }],
+  materials: [],
+}
+
+export function useWorkOrderForm(options?: UseWorkOrderFormOptions) {
   const submit = useSubmit()
   const navigation = useNavigation()
 
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema) as never,
-    defaultValues: {
-      client: '',
-      address: '',
-      carNumber: '',
-      driverOut: '',
-      driverReturn: '',
-      tasks: [{ description: '', startTime: '', endTime: '' }],
-      labor: [{ technicianName: '', entryTime: '', exitTime: '' }],
-      materials: [],
-    },
+    defaultValues: { ...emptyDefaults, ...options?.defaultValues },
   })
 
   const tasksFieldArray = useFieldArray({

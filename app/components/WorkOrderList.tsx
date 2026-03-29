@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { StatusBadge } from '~/components/StatusBadge'
+import { formatDate } from '~/lib/dates'
 
 export type WorkOrderListItemData = {
   id: string
@@ -7,16 +8,6 @@ export type WorkOrderListItemData = {
   client: string
   address: string
   validationCount: number
-}
-
-const dateFormatter = new Intl.DateTimeFormat('es-ES', {
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric',
-})
-
-function formatDate(iso: string): string {
-  return dateFormatter.format(new Date(iso))
 }
 
 const thClass = 'font-mono uppercase tracking-wider text-xs px-4 py-3'

@@ -6,4 +6,6 @@ export default [
   route('api/auth/*', 'routes/api.auth.$.tsx'),
   route('auth/login', 'routes/auth.login.tsx'),
   route('work-orders/new', 'routes/work-orders.new.tsx'),
+  route('work-orders/:id/edit', 'routes/work-orders.$id.edit.tsx'),
+  route('work-orders/:id', 'routes/work-orders.$id.tsx'),
 ] satisfies RouteConfig
