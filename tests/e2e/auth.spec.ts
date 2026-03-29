@@ -27,6 +27,26 @@ test.describe('Authentication', () => {
     expect(page.url()).toContain('/')
   })
 
+  test('should show error for invalid credentials', async ({ page }) => {
+    await page.goto('/auth/login')
+
+    await page.fill('input[name="email"]', 'nonexistent@example.com')
+    await page.fill('input[name="password"]', 'WrongPassword123!')
+
+    await page.click('button[type="submit"]')
+
+    await expect(page.getByText('Credenciales inválidas')).toBeVisible({ timeout: 10000 })
+    expect(page.url()).toContain('/auth/login')
+  })
+
+  test('should show validation errors for empty fields', async ({ page }) => {
+    await page.goto('/auth/login')
+
+    await page.click('button[type="submit"]')
+
+    await expect(page.getByText('Email inválido')).toBeVisible()
+  })
+
   test('should persist session across page refreshes', async ({ page, context, baseURL }) => {
     // Create a session via API
     const timestamp = Date.now()
