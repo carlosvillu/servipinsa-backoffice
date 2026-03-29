@@ -212,6 +212,6 @@ test.describe('Dashboard - Listado de partes', () => {
     await page.goto('/')
 
     await page.getByRole('link', { name: /nuevo parte/i }).click()
-    expect(page.url()).toContain('/work-orders/new')
+    await expect(page).toHaveURL(/work-orders\/new/, { timeout: 10000 })
   })
 })
