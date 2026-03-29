@@ -283,24 +283,24 @@ Antes de empezar, necesitas tener configurado:
 
 #### Task 7.1: Servicio de gestión de usuarios
 
-- [ ] Añadir a `app/services/users.server.ts`:
+- [x] Añadir a `app/services/users.server.ts`:
   - `listUsers()` — lista todos los usuarios con su rol
   - `createUser(email, password, name)` — crea usuario con rol EMPLEADO usando Better Auth API
   - `promoteToManager(userId)` — actualiza rol a MANAGER
-- [ ] Verificar que `npm run typecheck` pasa
+- [x] Verificar que `npm run typecheck` pasa
 
 #### Task 7.2: Página de gestión de usuarios
 
-- [ ] Crear componente `app/components/UserList.tsx` — tabla de usuarios (nombre, email, rol)
-- [ ] Crear componente `app/components/CreateUserDialog.tsx` — formulario modal para crear usuario (email, contraseña, nombre)
-- [ ] Crear componente `app/components/PromoteUserDialog.tsx` — confirmación para promover a MANAGER
-- [ ] Crear `app/routes/users.tsx` con loader (`requireManager`) y actions (crear usuario, promover)
-- [ ] Registrar ruta `/users` en `app/routes.ts`
-- [ ] Añadir enlace "Usuarios" en la navegación, visible solo para MANAGER
-- [ ] Test E2E: MANAGER crea un nuevo usuario → aparece en la lista como EMPLEADO
-- [ ] Test E2E: MANAGER promueve usuario a MANAGER → rol actualizado en la lista
-- [ ] Test E2E: EMPLEADO no puede acceder a `/users` (redirect o 403)
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Crear componente `app/components/UserList.tsx` — tabla de usuarios (nombre, email, rol)
+- [x] Crear componente `app/components/CreateUserDialog.tsx` — formulario modal para crear usuario (email, contraseña, nombre)
+- [x] Crear componente `app/components/PromoteUserDialog.tsx` — confirmación para promover a MANAGER
+- [x] Crear `app/routes/users.tsx` con loader (`requireManager`) y actions (crear usuario, promover)
+- [x] Registrar ruta `/users` en `app/routes.ts`
+- [x] Añadir enlace "Usuarios" en la navegación, visible solo para MANAGER
+- [x] Test E2E: MANAGER crea un nuevo usuario → aparece en la lista como EMPLEADO
+- [x] Test E2E: MANAGER promueve usuario a MANAGER → rol actualizado en la lista
+- [x] Test E2E: EMPLEADO no puede acceder a `/users` (redirect o 403)
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
 
 ---
 
@@ -403,8 +403,8 @@ Antes de empezar, necesitas tener configurado:
 | 5 | 5.3 Página edición | ✅ Complete | Reutiliza WorkOrderForm con defaultValues, 4 tests E2E |
 | 6 | 6.1 Servicio validación | ✅ Complete | validateWorkOrder + hasManagerValidated |
 | 6 | 6.2 UI validación | ✅ Complete | ValidateWorkOrderDialog + action + 2 tests E2E |
-| 7 | 7.1 Servicio gestión usuarios | ⬜ Not Started | |
-| 7 | 7.2 Página gestión usuarios | ⬜ Not Started | |
+| 7 | 7.1 Servicio gestión usuarios | ✅ Complete | listUsers, createUser, promoteToManager |
+| 7 | 7.2 Página gestión usuarios | ✅ Complete | UserList, CreateUserDialog, PromoteUserDialog, 4 tests E2E |
 | 8 | 8.1 Navegación principal | ⬜ Not Started | |
 | 8 | 8.2 Feedback y polish | ⬜ Not Started | |
 

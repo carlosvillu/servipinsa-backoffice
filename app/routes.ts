@@ -8,4 +8,5 @@ export default [
   route('work-orders/new', 'routes/work-orders.new.tsx'),
   route('work-orders/:id/edit', 'routes/work-orders.$id.edit.tsx'),
   route('work-orders/:id', 'routes/work-orders.$id.tsx'),
+  route('users', 'routes/users.tsx'),
 ] satisfies RouteConfig
