@@ -123,8 +123,8 @@ test.describe('Dashboard - Listado de partes', () => {
     await setAuthCookie(context, user.token)
     await page.goto('/')
 
-    await expect(page.getByRole('link', { name: 'Validado', exact: true }).first()).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Pendiente', exact: true }).first()).toBeVisible()
+    await expect(page.locator('span', { hasText: /^Validado$/ }).first()).toBeVisible()
+    await expect(page.locator('span', { hasText: /^Pendiente$/ }).first()).toBeVisible()
   })
 
   test('paginación funciona correctamente', async ({

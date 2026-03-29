@@ -33,7 +33,6 @@ export function UserDropdown({ user, onLogout }: UserDropdownProps) {
           aria-label="User menu"
         />}
       >
-          {/* Avatar: always visible */}
           <div className="w-8 h-8 rounded-full bg-[#383838] text-[#F4EFEA] flex items-center justify-center text-xs font-medium">
             {initials}
           </div>
@@ -41,20 +40,17 @@ export function UserDropdown({ user, onLogout }: UserDropdownProps) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="min-w-[200px]">
-        {/* Email completo */}
         <div className="px-3 py-2 border-b border-[#E0E0E0]">
           <p className="text-sm font-mono text-[#757575] truncate">{user.email}</p>
         </div>
 
 
-        {/* Link a dashboard (solo si es podcaster) */}
         {user.role === 'MANAGER' && (
           <DropdownMenuItem render={<Link to="/dashboard" />} className="cursor-pointer">
               Dashboard
           </DropdownMenuItem>
         )}
 
-        {/* Logout */}
         <DropdownMenuItem onClick={onLogout} className="cursor-pointer">
           Cerrar sesión
         </DropdownMenuItem>

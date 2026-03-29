@@ -37,13 +37,8 @@ export async function listWorkOrders(
   const whereClause =
     role === 'EMPLEADO' ? eq(workOrders.createdBy, userId) : undefined
 
-  // Count total matching records
   const totalQuery = db.select({ count: count() }).from(workOrders)
-  const [{ count: total }] = whereClause
-    ? await totalQuery.where(whereClause)
-    : await totalQuery
 
-  // Subquery: validation count per workOrder
   const validationCountSq = db
     .select({
       workOrderId: workOrderValidations.workOrderId,
@@ -53,7 +48,6 @@ export async function listWorkOrders(
     .groupBy(workOrderValidations.workOrderId)
     .as('vc')
 
-  // Main query with left join
   const baseQuery = db
     .select({
       id: workOrders.id,
@@ -75,10 +69,12 @@ export async function listWorkOrders(
     .limit(pageSize)
     .offset((page - 1) * pageSize)
 
-  const items = whereClause
-    ? await baseQuery.where(whereClause)
-    : await baseQuery
+  const [countResult, items] = await Promise.all([
+    whereClause ? totalQuery.where(whereClause) : totalQuery,
+    whereClause ? baseQuery.where(whereClause) : baseQuery,
+  ])
 
+  const total = countResult[0].count
   const totalPages = Math.ceil(total / pageSize)
 
   return { items, total, page, pageSize, totalPages }
