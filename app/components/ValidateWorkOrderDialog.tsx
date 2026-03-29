@@ -35,10 +35,7 @@ export function ValidateWorkOrderDialog() {
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
-              fetcher.submit(
-                { _intent: 'validate' },
-                { method: 'post' }
-              )
+              fetcher.submit(new FormData(), { method: 'post' })
             }}
           >
             Confirmar Validación

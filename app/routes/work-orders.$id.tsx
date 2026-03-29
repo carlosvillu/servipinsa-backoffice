@@ -1,6 +1,7 @@
 import { data, Link } from 'react-router'
 import type { Route } from './+types/work-orders.$id'
 import { requireAuth } from '~/lib/auth.server'
+import { requireManager } from '~/lib/authorization.server'
 import type { UserRole } from '~/db/schema/users'
 import {
   getWorkOrderById,
@@ -74,22 +75,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
-  const authSession = await requireAuth(request)
-  const role = authSession.user.role as UserRole
-
-  if (role !== 'MANAGER') {
-    throw new Response('Sin permisos', { status: 403 })
-  }
-
-  const formData = await request.formData()
-  const intent = formData.get('_intent')
-
-  if (intent === 'validate') {
-    await validateWorkOrder(params.id, authSession.user.id)
-    return data({ ok: true })
-  }
-
-  throw new Response('Intent no válido', { status: 400 })
+  const authSession = await requireManager(request)
+  await validateWorkOrder(params.id, authSession.user.id)
+  return data({ ok: true })
 }
 
 export default function WorkOrderDetailPage({
