@@ -1,6 +1,6 @@
-# [PROJECT_NAME]
+# Servipinsa
 
-A production-ready SaaS template built with modern web technologies. Provides authentication, database integration, internationalization, and comprehensive testing out of the box.
+Aplicacion de gestion de partes de trabajo para Servipinsa. Permite crear, editar y validar partes de trabajo con detalle de tareas realizadas, mano de obra y materiales utilizados.
 
 ## Tech Stack
 
@@ -8,182 +8,182 @@ A production-ready SaaS template built with modern web technologies. Provides au
 - **Build Tool:** Vite
 - **Styling:** Tailwind CSS 4 + Base UI
 - **Language:** TypeScript
-- **Database:** PostgreSQL + Drizzle ORM
-- **Auth:** Better Auth
+- **Database:** PostgreSQL (Neon) + Drizzle ORM
+- **Auth:** Better Auth (email/password + Google OAuth)
 - **Testing:** Playwright E2E + TestContainers
-- **Deployment:** Netlify (configurable)
+- **Deployment:** Netlify
 
-## Features
+## Funcionalidades
 
-- Email + Google OAuth authentication
-- Protected routes with role-based access
-- PostgreSQL database with Drizzle ORM
-- Responsive mobile-first design (estilo Refined Brutalism)
-- Comprehensive E2E testing with TestContainers
-- Type-safe environment variables
-- Production-ready deployment configuration
+- **Partes de trabajo:** Crear, editar, visualizar y validar partes con tareas, mano de obra y materiales
+- **Validaciones:** Los managers pueden validar partes, lo que los bloquea para edicion
+- **Gestion de usuarios:** Crear empleados, promover a manager
+- **Control de acceso por rol:** MANAGER (acceso completo) y EMPLEADO (solo sus partes)
+- **Autenticacion:** Email/password y Google OAuth
+- **Responsive:** Diseno mobile-first con estetica Refined Brutalism
 
-## Prerequisites
+## Requisitos
 
 - Node.js 20+
 - npm 10+
-- Docker (for E2E tests)
-- PostgreSQL database (local or cloud)
+- Docker (para tests E2E y base de datos local)
 
-## Getting Started
+## Inicio rapido
 
-### 1. Clone and Install
+### 1. Instalar dependencias
 
 ```bash
-git clone <your-repo-url>
-cd saas-template
 npm install
 ```
 
-### 2. Environment Variables
-
-Copy the example environment file and fill in your values:
+### 2. Variables de entorno
 
 ```bash
-cp .env.example .env
+cp .env.example .env.development
 ```
 
-Required environment variables:
+Variables requeridas:
 
 ```env
-# Database
-DATABASE_URL=postgresql://...
-
-# Better Auth
-BETTER_AUTH_SECRET=<random-secret-string>
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/servipinsa
+BETTER_AUTH_SECRET=<openssl rand -base64 32>
 BETTER_AUTH_URL=http://localhost:2025
-
-# Google OAuth (optional)
-GOOGLE_CLIENT_ID=<your-google-client-id>
-GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+SEED_ADMIN_EMAIL=tu@email.com
+SEED_ADMIN_PASSWORD=tupassword
 ```
 
-See `.env.example` for all available configuration options.
-
-### 3. Database Setup
-
-Generate and run migrations:
+### 3. Base de datos
 
 ```bash
-npm run db:generate  # Generate migrations from schema
-npm run db:migrate   # Apply migrations to database
+npm run db:up          # Levantar PostgreSQL con Docker
+npm run db:migrate     # Aplicar migraciones
+npm run db:seed        # Crear usuario admin (MANAGER)
 ```
 
-### 4. Development Server
+### 4. Servidor de desarrollo
 
 ```bash
 npm run dev
 ```
 
-App runs at `http://localhost:2025`
+La app corre en `http://localhost:2025`
 
-## Available Scripts
+## Scripts
 
-### Development
+### Desarrollo
 
-| Command | Description |
+| Comando | Descripcion |
 |---------|-------------|
-| `npm run dev` | Start development server (port 2025) |
-| `npm run build` | Create production build |
-| `npm run start` | Start production server |
+| `npm run dev` | Servidor de desarrollo (puerto 2025) |
+| `npm run build` | Build de produccion |
+| `npm run start` | Arrancar servidor de produccion |
 
-### Code Quality
+### Calidad de codigo
 
-| Command | Description |
+| Comando | Descripcion |
 |---------|-------------|
-| `npm run typecheck` | Type check with TypeScript |
-| `npm run lint` | Lint with ESLint |
-| `npm run format` | Format with Prettier |
+| `npm run typecheck` | Verificacion de tipos TypeScript |
+| `npm run lint` | Linting con ESLint |
+| `npm run format` | Formateo con Prettier |
 
 ### Testing
 
-| Command | Description |
+| Comando | Descripcion |
 |---------|-------------|
-| `npm run test:e2e` | Run Playwright E2E tests |
-| `npm run test:e2e:ui` | Run tests with Playwright UI |
+| `npm run test:e2e` | Tests E2E con Playwright |
 
-### Database
+### Base de datos
 
-| Command | Description |
+| Comando | Descripcion |
 |---------|-------------|
-| `npm run db:generate` | Generate Drizzle migrations from schema |
-| `npm run db:migrate` | Apply migrations to database |
-| `npm run db:studio` | Open Drizzle Studio (database GUI) |
+| `npm run db:up` | Levantar PostgreSQL (Docker) |
+| `npm run db:down` | Parar PostgreSQL |
+| `npm run db:reset` | Resetear base de datos (borra volumenes) |
+| `npm run db:generate` | Generar migraciones desde schema |
+| `npm run db:migrate` | Aplicar migraciones |
+| `npm run db:seed` | Seed del usuario admin |
 
-## Project Structure
+### Deploy
+
+| Comando | Descripcion |
+|---------|-------------|
+| `npm run deploy` | Deploy a produccion (Netlify) |
+| `npm run deploy:preview` | Deploy preview |
+| `npm run db:migrate:prod` | Migraciones en produccion |
+
+## Estructura del proyecto
 
 ```
 app/
-├── routes/          # Route components (manual registration in routes.ts)
-├── components/      # React components
-│   ├── ui/         # Base UI base components
-│   └── landing/    # Landing page components
-├── db/             # Database connection and schema
-│   ├── index.ts    # Drizzle client
-│   └── schema/     # Database schema definitions
-├── lib/            # Framework-agnostic utilities
-├── hooks/          # React hooks
-└── root.tsx        # Root layout
+├── routes/              # Rutas (registro manual en routes.ts)
+├── components/          # Componentes React
+│   └── ui/             # Componentes base (Base UI)
+├── db/                  # Conexion y schema de base de datos
+│   └── schema/         # Definiciones de tablas (Drizzle)
+├── services/            # Logica de negocio (CRUD, validaciones)
+├── hooks/               # Hooks React (formularios, toasts)
+├── schemas/             # Schemas de validacion (Zod)
+├── lib/                 # Utilidades (auth, fechas, etc.)
+└── root.tsx             # Layout raiz
 
 tests/
-├── e2e/            # Playwright E2E tests
-├── fixtures/       # Test fixtures and seeders
-└── helpers/        # TestContainers helpers
+├── e2e/                 # Tests E2E (Playwright)
+├── fixtures/            # Fixtures de test
+└── helpers/             # Helpers (TestContainers, auth, DB)
 
-docs/               # Project documentation
-├── AUTH.md         # Authentication guide
-├── DATABASE.md     # Database conventions
-├── DEPLOYMENT.md   # Deployment guide
-├── TESTING.md      # Testing guide
-└── STYLE_GUIDE.md  # UI/UX style guide
-
-drizzle/            # Generated migration files
+docs/                    # Documentacion del proyecto
+drizzle/                 # Migraciones generadas
 ```
 
-## Documentation
+## Modelo de datos
 
-Comprehensive documentation is available in the `/docs` folder:
+- **Users** — Usuarios con roles (MANAGER / EMPLEADO)
+- **Work Orders** — Partes de trabajo (cliente, direccion, conductor)
+- **Work Order Tasks** — Tareas realizadas (descripcion, hora inicio/fin)
+- **Work Order Labor** — Mano de obra (tecnico, hora entrada/salida)
+- **Work Order Materials** — Materiales (unidades, descripcion, proyecto, suministro)
+- **Work Order Validations** — Validaciones de managers
 
-- **[AUTH.md](docs/AUTH.md)** - Authentication setup, helpers, and route protection
-- **[DATABASE.md](docs/DATABASE.md)** - Database setup, schema management, and Drizzle conventions
-- **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** - Deployment configuration and environment variables
-- **[TESTING.md](docs/TESTING.md)** - E2E testing with Playwright and TestContainers
-- **[STYLE_GUIDE.md](docs/STYLE_GUIDE.md)** - UI design system and component guidelines
+## Documentacion
 
-## Architecture Principles
+- **[AUTH.md](docs/AUTH.md)** — Autenticacion, helpers servidor/cliente, proteccion de rutas
+- **[DATABASE.md](docs/DATABASE.md)** — Setup de base de datos y convenciones Drizzle
+- **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** — Configuracion de deploy y variables de entorno
+- **[TESTING.md](docs/TESTING.md)** — Testing E2E con Playwright y TestContainers
+- **[STYLE_GUIDE.md](docs/STYLE_GUIDE.md)** — Sistema de diseno y guia de componentes
+- **[FRONTEND_DESIGN.md](docs/FRONTEND_DESIGN.md)** — Guia de diseno frontend
+- **[KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md)** — Problemas conocidos y soluciones
+- **[TASK_PLANNING.md](docs/TASK_PLANNING.md)** — Metodologia de planificacion de tareas
 
-### Route & Component Design
+## Arquitectura
 
-- **Routes are thin:** Loaders/actions parse requests and call services
-- **Components are presentational:** Render UI and orchestrate hooks
-- **Business logic in services:** Domain logic lives in `app/services/`
-- **State orchestration in hooks:** React-specific logic in `app/hooks/`
+- **Rutas finas:** Loaders/actions parsean requests y delegan a servicios
+- **Componentes presentacionales:** Renderizan UI y orquestan hooks
+- **Logica de negocio en servicios:** `app/services/` contiene operaciones de dominio
+- **Orquestacion en hooks:** `app/hooks/` para logica React-specific
+- **Un componente por archivo**, responsabilidad unica
+- **Registro manual de rutas** en `app/routes.ts` (sin file-based routing)
+- **Validacion con Zod** en formularios y actions
 
-### Code Organization
+## Deploy en produccion
 
-- One component per file
-- Small, focused files with single responsibility
-- Explicit imports (avoid barrel exports)
-- Manual route registration in `app/routes.ts`
+La app esta desplegada en:
 
-### Testing Strategy
+- **App:** https://servipinsa.netlify.app
+- **Base de datos:** Neon PostgreSQL
 
-- E2E tests only (no unit/integration tests)
-- TestContainers for database isolation
-- Semantic test fixtures
-- Always run with `--retries=1`
+Para deployar cambios:
 
-## Deployment
+```bash
+# Si hay cambios de schema, migrar primero
+DB_ENV=production npm run db:migrate
 
-The template is configured for Netlify deployment but can be adapted for other platforms.
+# Deploy
+npm run deploy
+```
 
-See [DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed deployment instructions and environment variable configuration.
+Ver [DEPLOYMENT.md](docs/DEPLOYMENT.md) para mas detalles.
 
-## License
+## Licencia
 
 MIT
