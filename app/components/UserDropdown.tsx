@@ -38,10 +38,6 @@ export function UserDropdown({ user, onLogout }: UserDropdownProps) {
             {initials}
           </div>
 
-          {/* Email: desktop only */}
-          <span className="hidden md:block text-sm font-mono text-[#757575] truncate max-w-[150px]">
-            {user.email}
-          </span>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="min-w-[200px]">
@@ -52,7 +48,7 @@ export function UserDropdown({ user, onLogout }: UserDropdownProps) {
 
 
         {/* Link a dashboard (solo si es podcaster) */}
-        {user.role === 'podcaster' && (
+        {user.role === 'MANAGER' && (
           <DropdownMenuItem render={<Link to="/dashboard" />} className="cursor-pointer">
               Dashboard
           </DropdownMenuItem>

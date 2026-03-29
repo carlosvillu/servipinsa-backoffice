@@ -42,6 +42,7 @@ function DropdownMenuContent({
         sideOffset={sideOffset}
         side={side}
         align={align}
+        className="z-[60]"
       >
         <Menu.Popup
           data-slot="dropdown-menu-content"

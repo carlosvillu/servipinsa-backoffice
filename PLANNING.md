@@ -130,20 +130,20 @@ Antes de empezar, necesitas tener configurado:
 
 #### Task 2.1: Helpers de autorización por rol
 
-- [ ] Crear `app/lib/authorization.server.ts` con helpers: `requireManager(request)` (lanza redirect/403 si no es MANAGER), `getUserRole(request)` (devuelve el rol del usuario autenticado)
-- [ ] Los helpers deben usar `requireAuth()` internamente y luego consultar el rol del usuario
-- [ ] Crear servicio `app/services/users.server.ts` con funciones para consultar/actualizar roles
-- [ ] Verificar que `npm run typecheck` pasa
-- [ ] Verificar que `npm run test:e2e` pasa (tests básicos de auth siguen funcionando)
+- [x] Crear `app/lib/authorization.server.ts` con helpers: `requireManager(request)` (lanza redirect/403 si no es MANAGER), `getUserRole(request)` (devuelve el rol del usuario autenticado)
+- [x] Los helpers deben usar `requireAuth()` internamente y luego consultar el rol del usuario
+- [x] Crear servicio `app/services/users.server.ts` con funciones para consultar/actualizar roles
+- [x] Verificar que `npm run typecheck` pasa
+- [x] Verificar que `npm run test:e2e` pasa (tests básicos de auth siguen funcionando)
 
 #### Task 2.2: Página de login adaptada
 
-- [ ] Actualizar `app/routes/auth.login.tsx` con textos en español
-- [ ] Eliminar cualquier referencia a signup o Google OAuth
-- [ ] Asegurar que el redirect post-login lleva al dashboard (`/`)
-- [ ] Test E2E: login con credenciales válidas redirige al dashboard
-- [ ] Test E2E: login con credenciales inválidas muestra error
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Actualizar `app/routes/auth.login.tsx` con textos en español
+- [x] Eliminar cualquier referencia a signup o Google OAuth
+- [x] Asegurar que el redirect post-login lleva al dashboard (`/`)
+- [x] Test E2E: login con credenciales válidas redirige al dashboard
+- [x] Test E2E: login con credenciales inválidas muestra error
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
 
 ---
 
@@ -154,24 +154,24 @@ Antes de empezar, necesitas tener configurado:
 
 #### Task 3.1: Servicio de partes de trabajo
 
-- [ ] Crear `app/services/workOrders.server.ts` con funciones:
+- [x] Crear `app/services/workOrders.server.ts` con funciones:
   - `listWorkOrders({ userId, role, page, pageSize })` — lista partes con paginación (EMPLEADO: solo propios, MANAGER: todos)
   - `getWorkOrderById(id)` — obtiene un parte con todas sus relaciones (tasks, labor, materials, validations)
-- [ ] Las queries deben incluir conteo de validaciones para mostrar en el listado
-- [ ] Verificar que `npm run typecheck` pasa
+- [x] Las queries deben incluir conteo de validaciones para mostrar en el listado
+- [x] Verificar que `npm run typecheck` pasa
 
 #### Task 3.2: Página de dashboard
 
-- [ ] Crear componente `app/components/WorkOrderList.tsx` — tabla/lista de partes (fecha, cliente, dirección, nº validaciones, estado)
-- [ ] Crear componente `app/components/Pagination.tsx` — controles de paginación
-- [ ] Crear ruta `/` en `app/routes/home.tsx` con loader que llame al servicio `listWorkOrders`
-- [ ] Loader usa `requireAuth()` y pasa `userId` y `role` al servicio
-- [ ] Click en fila navega a `/work-orders/:id`
-- [ ] Botón "Nuevo Parte de Trabajo" navega a `/work-orders/new`
-- [ ] Indicador visual de estado: "Pendiente" vs "Validado"
-- [ ] Test E2E: EMPLEADO autenticado ve solo sus partes
-- [ ] Test E2E: MANAGER autenticado ve todos los partes
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Crear componente `app/components/WorkOrderList.tsx` — tabla/lista de partes (fecha, cliente, dirección, nº validaciones, estado)
+- [x] Crear componente `app/components/Pagination.tsx` — controles de paginación
+- [x] Crear ruta `/` en `app/routes/home.tsx` con loader que llame al servicio `listWorkOrders`
+- [x] Loader usa `requireAuth()` y pasa `userId` y `role` al servicio
+- [x] Click en fila navega a `/work-orders/:id`
+- [x] Botón "Nuevo Parte de Trabajo" navega a `/work-orders/new`
+- [x] Indicador visual de estado: "Pendiente" vs "Validado"
+- [x] Test E2E: EMPLEADO autenticado ve solo sus partes
+- [x] Test E2E: MANAGER autenticado ve todos los partes
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
 
 ---
 
@@ -391,10 +391,10 @@ Antes de empezar, necesitas tener configurado:
 | 1 | 1.2 Schema partes de trabajo | ✅ Complete | 5 tablas en un solo archivo work-orders.ts |
 | 1 | 1.3 Seed MANAGER inicial | ✅ Complete | npm run db:seed, idempotente |
 | 1 | 1.4 Actualizar fixtures test | ✅ Complete | Seeders + createAuthSessionWithRole |
-| 2 | 2.1 Helpers autorización | ⬜ Not Started | |
-| 2 | 2.2 Login adaptado | ⬜ Not Started | |
-| 3 | 3.1 Servicio listado partes | ⬜ Not Started | |
-| 3 | 3.2 Página dashboard | ⬜ Not Started | |
+| 2 | 2.1 Helpers autorización | ✅ Complete | requireManager + getUserRole + users.server.ts |
+| 2 | 2.2 Login adaptado | ✅ Complete | Textos español, sin signup/OAuth, tests E2E |
+| 3 | 3.1 Servicio listado partes | ✅ Complete | listWorkOrders + getWorkOrderById |
+| 3 | 3.2 Página dashboard | ✅ Complete | WorkOrderList, Pagination, StatusBadge, 6 tests E2E |
 | 4 | 4.1 Servicio creación partes | ⬜ Not Started | |
 | 4 | 4.2 Formulario creación | ⬜ Not Started | |
 | 4 | 4.3 Ruta de creación | ⬜ Not Started | |
