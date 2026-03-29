@@ -23,7 +23,14 @@ export async function action({ request }: Route.ActionArgs) {
     return data({ errors: { formErrors: ['Datos invalidos'] } }, { status: 400 })
   }
 
-  const parsed = workOrderFormSchema.safeParse(JSON.parse(jsonString))
+  let jsonData: unknown
+  try {
+    jsonData = JSON.parse(jsonString)
+  } catch {
+    return data({ errors: { formErrors: ['Datos invalidos'] } }, { status: 400 })
+  }
+
+  const parsed = workOrderFormSchema.safeParse(jsonData)
 
   if (!parsed.success) {
     return data(

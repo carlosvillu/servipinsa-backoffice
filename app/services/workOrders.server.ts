@@ -110,35 +110,40 @@ export async function createWorkOrder(
 
     const workOrderId = inserted.id
 
-    await tx.insert(workOrderTasks).values(
-      data.tasks.map((task) => ({
-        workOrderId,
-        description: task.description,
-        startTime: timeStringToDate(task.startTime),
-        endTime: timeStringToDate(task.endTime),
-      }))
-    )
-
-    await tx.insert(workOrderLabor).values(
-      data.labor.map((entry) => ({
-        workOrderId,
-        technicianName: entry.technicianName,
-        entryTime: timeStringToDate(entry.entryTime),
-        exitTime: timeStringToDate(entry.exitTime),
-      }))
-    )
+    const inserts: Promise<unknown>[] = [
+      tx.insert(workOrderTasks).values(
+        data.tasks.map((task) => ({
+          workOrderId,
+          description: task.description,
+          startTime: timeStringToDate(task.startTime),
+          endTime: timeStringToDate(task.endTime),
+        }))
+      ),
+      tx.insert(workOrderLabor).values(
+        data.labor.map((entry) => ({
+          workOrderId,
+          technicianName: entry.technicianName,
+          entryTime: timeStringToDate(entry.entryTime),
+          exitTime: timeStringToDate(entry.exitTime),
+        }))
+      ),
+    ]
 
     if (data.materials.length > 0) {
-      await tx.insert(workOrderMaterials).values(
-        data.materials.map((material) => ({
-          workOrderId,
-          units: material.units,
-          description: material.description,
-          project: material.project || null,
-          supply: material.supply || null,
-        }))
+      inserts.push(
+        tx.insert(workOrderMaterials).values(
+          data.materials.map((material) => ({
+            workOrderId,
+            units: material.units,
+            description: material.description,
+            project: material.project || null,
+            supply: material.supply || null,
+          }))
+        )
       )
     }
+
+    await Promise.all(inserts)
 
     return workOrderId
   })

@@ -1,9 +1,4 @@
-import {
-  useForm,
-  useFieldArray,
-  type UseFormReturn,
-  type UseFieldArrayReturn,
-} from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSubmit, useNavigation } from 'react-router'
 import {
@@ -11,16 +6,7 @@ import {
   type WorkOrderFormData,
 } from '~/schemas/workOrder'
 
-export type WorkOrderFormReturn = {
-  form: UseFormReturn<WorkOrderFormData>
-  tasksFieldArray: UseFieldArrayReturn<WorkOrderFormData, 'tasks'>
-  laborFieldArray: UseFieldArrayReturn<WorkOrderFormData, 'labor'>
-  materialsFieldArray: UseFieldArrayReturn<WorkOrderFormData, 'materials'>
-  onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>
-  isSubmitting: boolean
-}
-
-export function useWorkOrderForm(): WorkOrderFormReturn {
+export function useWorkOrderForm() {
   const submit = useSubmit()
   const navigation = useNavigation()
 

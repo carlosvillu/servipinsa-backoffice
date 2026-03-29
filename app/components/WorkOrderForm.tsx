@@ -1,6 +1,6 @@
 import { useWorkOrderForm } from '~/hooks/useWorkOrderForm'
-import { Form } from '~/components/ui/form'
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
@@ -27,7 +27,7 @@ export function WorkOrderForm() {
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="space-y-8">
-        <Card className="border border-[#383838] bg-white">
+        <Card>
           <CardHeader>
             <CardTitle className="font-mono text-xl uppercase">
               Datos Generales
@@ -41,11 +41,7 @@ export function WorkOrderForm() {
                 <FormItem>
                   <FormLabel>Cliente</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Nombre del cliente"
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                      {...field}
-                    />
+                    <Input placeholder="Nombre del cliente" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -58,11 +54,7 @@ export function WorkOrderForm() {
                 <FormItem>
                   <FormLabel>Direccion</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Direccion del trabajo"
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                      {...field}
-                    />
+                    <Input placeholder="Direccion del trabajo" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,11 +68,7 @@ export function WorkOrderForm() {
                   <FormItem>
                     <FormLabel>Numero de coche</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Opcional"
-                        className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                        {...field}
-                      />
+                      <Input placeholder="Opcional" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -93,11 +81,7 @@ export function WorkOrderForm() {
                   <FormItem>
                     <FormLabel>Conductor salida</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Opcional"
-                        className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                        {...field}
-                      />
+                      <Input placeholder="Opcional" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -110,11 +94,7 @@ export function WorkOrderForm() {
                   <FormItem>
                     <FormLabel>Conductor retorno</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Opcional"
-                        className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                        {...field}
-                      />
+                      <Input placeholder="Opcional" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -18,7 +18,7 @@ type Props = {
 
 export function WorkOrderLaborSection({ fieldsArray, control }: Props) {
   return (
-    <Card className="border border-[#383838] bg-white">
+    <Card>
       <CardHeader>
         <CardTitle className="font-mono text-xl uppercase">
           Mano de Obra
@@ -37,11 +37,7 @@ export function WorkOrderLaborSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Nombre del tecnico</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Nombre del tecnico"
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                      {...field}
-                    />
+                    <Input placeholder="Nombre del tecnico" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -54,11 +50,7 @@ export function WorkOrderLaborSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Hora entrada</FormLabel>
                   <FormControl>
-                    <Input
-                      type="time"
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                      {...field}
-                    />
+                    <Input type="time" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -71,11 +63,7 @@ export function WorkOrderLaborSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Hora salida</FormLabel>
                   <FormControl>
-                    <Input
-                      type="time"
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                      {...field}
-                    />
+                    <Input type="time" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

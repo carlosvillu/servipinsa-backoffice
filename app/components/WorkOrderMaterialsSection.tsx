@@ -18,7 +18,7 @@ type Props = {
 
 export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
   return (
-    <Card className="border border-[#383838] bg-white">
+    <Card>
       <CardHeader>
         <CardTitle className="font-mono text-xl uppercase">
           Materiales
@@ -45,7 +45,7 @@ export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
                     <Input
                       type="number"
                       min={1}
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF] w-24"
+                      className="w-24"
                       {...field}
                     />
                   </FormControl>
@@ -60,11 +60,7 @@ export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Descripcion</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Descripcion del material"
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                      {...field}
-                    />
+                    <Input placeholder="Descripcion del material" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -77,11 +73,7 @@ export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Proyecto</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Proyecto"
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                      {...field}
-                    />
+                    <Input placeholder="Proyecto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -94,11 +86,7 @@ export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Suministro</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Suministro"
-                      className="bg-white border-[#383838] focus:border-[#2BA5FF]"
-                      {...field}
-                    />
+                    <Input placeholder="Suministro" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
