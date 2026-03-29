@@ -52,26 +52,21 @@ export function WorkOrderList({
           <tbody>
             {items.map((item) => (
               <tr key={item.id} className="border-t border-[#E0E0E0] bg-white hover:bg-[#E0E0E0] transition-colors">
-                <td colSpan={5} className="p-0">
-                  <Link
-                    to={`/work-orders/${item.id}`}
-                    className="grid grid-cols-[1fr_1fr_1fr_auto_auto] items-center"
-                  >
-                    <span className="px-4 py-3 font-sans text-sm text-[#383838]">
-                      {formatDate(item.createdAt)}
-                    </span>
-                    <span className="px-4 py-3 font-mono uppercase text-sm text-[#383838]">
-                      {item.client}
-                    </span>
-                    <span className="px-4 py-3 font-sans text-sm text-[#757575]">
-                      {item.address}
-                    </span>
-                    <span className="px-4 py-3 font-mono text-sm text-[#383838] text-center">
-                      {item.validationCount}
-                    </span>
-                    <span className="px-4 py-3 text-center">
-                      <StatusBadge validationCount={item.validationCount} />
-                    </span>
+                <td className="px-4 py-3 font-sans text-sm text-[#383838]">
+                  <Link to={`/work-orders/${item.id}`}>{formatDate(item.createdAt)}</Link>
+                </td>
+                <td className="px-4 py-3 font-mono uppercase text-sm text-[#383838]">
+                  <Link to={`/work-orders/${item.id}`}>{item.client}</Link>
+                </td>
+                <td className="px-4 py-3 font-sans text-sm text-[#757575]">
+                  <Link to={`/work-orders/${item.id}`}>{item.address}</Link>
+                </td>
+                <td className="px-4 py-3 font-mono text-sm text-[#383838] text-center">
+                  <Link to={`/work-orders/${item.id}`}>{item.validationCount}</Link>
+                </td>
+                <td className="px-4 py-3 text-center">
+                  <Link to={`/work-orders/${item.id}`}>
+                    <StatusBadge validationCount={item.validationCount} />
                   </Link>
                 </td>
               </tr>

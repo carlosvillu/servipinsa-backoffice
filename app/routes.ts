@@ -5,4 +5,5 @@ export default [
   route('health/db', 'routes/health.db.tsx'),
   route('api/auth/*', 'routes/api.auth.$.tsx'),
   route('auth/login', 'routes/auth.login.tsx'),
+  route('work-orders/new', 'routes/work-orders.new.tsx'),
 ] satisfies RouteConfig

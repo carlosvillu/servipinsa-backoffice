@@ -182,32 +182,32 @@ Antes de empezar, necesitas tener configurado:
 
 #### Task 4.1: Servicio de creación de partes
 
-- [ ] Añadir a `app/services/workOrders.server.ts`:
+- [x] Añadir a `app/services/workOrders.server.ts`:
   - `createWorkOrder(data)` — crea un parte con todos sus sub-registros (tasks, labor, materials) en una transacción
-- [ ] Definir schemas Zod para validación del formulario en `app/services/workOrders.server.ts` o archivo separado
-- [ ] Validaciones: campos obligatorios, mínimo 1 trabajo, mínimo 1 técnico, hora fin > hora inicio
-- [ ] Verificar que `npm run typecheck` pasa
+- [x] Definir schemas Zod para validación del formulario en `app/services/workOrders.server.ts` o archivo separado
+- [x] Validaciones: campos obligatorios, mínimo 1 trabajo, mínimo 1 técnico, hora fin > hora inicio
+- [x] Verificar que `npm run typecheck` pasa
 
 #### Task 4.2: Formulario de creación
 
-- [ ] Crear hook `app/hooks/useWorkOrderForm.ts` para gestionar el estado del formulario (secciones dinámicas: añadir/eliminar líneas de trabajos, mano de obra, materiales)
-- [ ] Crear componente `app/components/WorkOrderForm.tsx` — formulario con las 4 secciones
-- [ ] Crear componentes para cada sección dinámica: `WorkOrderTasksSection.tsx`, `WorkOrderLaborSection.tsx`, `WorkOrderMaterialsSection.tsx`
-- [ ] Usar Base UI form components con react-hook-form y Zod resolver
-- [ ] Botones para añadir/eliminar líneas en cada sección dinámica
-- [ ] Validación en cliente antes de enviar
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Crear hook `app/hooks/useWorkOrderForm.ts` para gestionar el estado del formulario (secciones dinámicas: añadir/eliminar líneas de trabajos, mano de obra, materiales)
+- [x] Crear componente `app/components/WorkOrderForm.tsx` — formulario con las 4 secciones
+- [x] Crear componentes para cada sección dinámica: `WorkOrderTasksSection.tsx`, `WorkOrderLaborSection.tsx`, `WorkOrderMaterialsSection.tsx`
+- [x] Usar Base UI form components con react-hook-form y Zod resolver
+- [x] Botones para añadir/eliminar líneas en cada sección dinámica
+- [x] Validación en cliente antes de enviar
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
 
 #### Task 4.3: Ruta de creación
 
-- [ ] Crear `app/routes/work-orders.new.tsx` con loader (`requireAuth`) y action (parsear form, llamar servicio, redirect a dashboard)
-- [ ] Registrar ruta `/work-orders/new` en `app/routes.ts`
-- [ ] La fecha de creación se asigna automáticamente en server
-- [ ] El `createdBy` se asigna desde la sesión del usuario
-- [ ] Tras crear, redirect al dashboard con mensaje de éxito
-- [ ] Test E2E: crear un parte completo con datos generales, 1 trabajo, 1 técnico y verificar que aparece en el dashboard
-- [ ] Test E2E: validación client-side muestra errores si faltan campos obligatorios
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Crear `app/routes/work-orders.new.tsx` con loader (`requireAuth`) y action (parsear form, llamar servicio, redirect a dashboard)
+- [x] Registrar ruta `/work-orders/new` en `app/routes.ts`
+- [x] La fecha de creación se asigna automáticamente en server
+- [x] El `createdBy` se asigna desde la sesión del usuario
+- [x] Tras crear, redirect al dashboard con mensaje de éxito
+- [x] Test E2E: crear un parte completo con datos generales, 1 trabajo, 1 técnico y verificar que aparece en el dashboard
+- [x] Test E2E: validación client-side muestra errores si faltan campos obligatorios
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
 
 ---
 
@@ -395,9 +395,9 @@ Antes de empezar, necesitas tener configurado:
 | 2 | 2.2 Login adaptado | ✅ Complete | Textos español, sin signup/OAuth, tests E2E |
 | 3 | 3.1 Servicio listado partes | ✅ Complete | listWorkOrders + getWorkOrderById |
 | 3 | 3.2 Página dashboard | ✅ Complete | WorkOrderList, Pagination, StatusBadge, 6 tests E2E |
-| 4 | 4.1 Servicio creación partes | ⬜ Not Started | |
-| 4 | 4.2 Formulario creación | ⬜ Not Started | |
-| 4 | 4.3 Ruta de creación | ⬜ Not Started | |
+| 4 | 4.1 Servicio creación partes | ✅ Complete | createWorkOrder con transacción Drizzle, schema Zod en app/schemas/workOrder.ts |
+| 4 | 4.2 Formulario creación | ✅ Complete | WorkOrderForm + 3 secciones dinámicas + useWorkOrderForm hook |
+| 4 | 4.3 Ruta de creación | ✅ Complete | work-orders.new.tsx, 6 tests E2E, PR #2 |
 | 5 | 5.1 Servicio edición | ⬜ Not Started | |
 | 5 | 5.2 Página detalle | ⬜ Not Started | |
 | 5 | 5.3 Página edición | ⬜ Not Started | |

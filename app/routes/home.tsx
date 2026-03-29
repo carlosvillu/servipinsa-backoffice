@@ -47,7 +47,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   return (
     <main className="w-full max-w-6xl mx-auto px-6 md:px-12 py-8 overflow-hidden">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
         <h1 className="font-mono text-2xl md:text-3xl uppercase text-[#383838]">
           Partes de Trabajo
         </h1>
