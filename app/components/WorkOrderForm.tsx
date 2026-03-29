@@ -1,3 +1,4 @@
+import type { WorkOrderFormData } from '~/schemas/workOrder'
 import { useWorkOrderForm } from '~/hooks/useWorkOrderForm'
 import {
   Form,
@@ -14,7 +15,15 @@ import { WorkOrderTasksSection } from '~/components/WorkOrderTasksSection'
 import { WorkOrderLaborSection } from '~/components/WorkOrderLaborSection'
 import { WorkOrderMaterialsSection } from '~/components/WorkOrderMaterialsSection'
 
-export function WorkOrderForm() {
+type WorkOrderFormProps = {
+  defaultValues?: Partial<WorkOrderFormData>
+  submitLabel?: string
+}
+
+export function WorkOrderForm({
+  defaultValues,
+  submitLabel = 'Crear Parte de Trabajo',
+}: WorkOrderFormProps = {}) {
   const {
     form,
     tasksFieldArray,
@@ -22,7 +31,7 @@ export function WorkOrderForm() {
     materialsFieldArray,
     onSubmit,
     isSubmitting,
-  } = useWorkOrderForm()
+  } = useWorkOrderForm({ defaultValues })
 
   return (
     <Form {...form}>
@@ -124,7 +133,7 @@ export function WorkOrderForm() {
           disabled={isSubmitting}
           className="w-full bg-[#383838] text-[#F4EFEA] font-mono uppercase border border-[#383838] hover:bg-[#2BA5FF] hover:border-[#2BA5FF] transition-all"
         >
-          {isSubmitting ? 'Guardando...' : 'Crear Parte de Trabajo'}
+          {isSubmitting ? 'Guardando...' : submitLabel}
         </Button>
       </form>
     </Form>

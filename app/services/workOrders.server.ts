@@ -10,6 +10,10 @@ import {
 import type { UserRole } from '~/db/schema/users'
 import type { WorkOrderFormData } from '~/schemas/workOrder'
 
+export type WorkOrderFull = NonNullable<
+  Awaited<ReturnType<typeof getWorkOrderById>>
+>
+
 export type WorkOrderListItem = {
   id: string
   createdAt: Date
@@ -156,10 +160,98 @@ export async function getWorkOrderById(id: string) {
       tasks: true,
       labor: true,
       materials: true,
-      validations: true,
+      validations: {
+        with: {
+          validator: {
+            columns: { id: true, name: true, email: true },
+          },
+        },
+      },
       creator: {
         columns: { id: true, name: true, email: true },
       },
     },
+  })
+}
+
+export function dateToTimeString(date: Date | null): string {
+  if (!date) return ''
+  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+}
+
+export function canEditWorkOrder(
+  workOrder: WorkOrderFull,
+  userId: string,
+  role: UserRole
+): boolean {
+  if (workOrder.validations.length > 0) return false
+  if (role === 'MANAGER') return true
+  if (role === 'EMPLEADO' && workOrder.createdBy === userId) return true
+  return false
+}
+
+export async function updateWorkOrder(
+  id: string,
+  data: WorkOrderFormData,
+  userId: string,
+  role: UserRole
+): Promise<void> {
+  const workOrder = await getWorkOrderById(id)
+  if (!workOrder) throw new Response('No encontrado', { status: 404 })
+  if (!canEditWorkOrder(workOrder, userId, role))
+    throw new Response('Sin permisos', { status: 403 })
+
+  await db.transaction(async (tx) => {
+    await tx
+      .update(workOrders)
+      .set({
+        client: data.client,
+        address: data.address,
+        carNumber: data.carNumber || null,
+        driverOut: data.driverOut || null,
+        driverReturn: data.driverReturn || null,
+      })
+      .where(eq(workOrders.id, id))
+
+    await Promise.all([
+      tx.delete(workOrderTasks).where(eq(workOrderTasks.workOrderId, id)),
+      tx.delete(workOrderLabor).where(eq(workOrderLabor.workOrderId, id)),
+      tx.delete(workOrderMaterials).where(eq(workOrderMaterials.workOrderId, id)),
+    ])
+
+    const inserts: Promise<unknown>[] = [
+      tx.insert(workOrderTasks).values(
+        data.tasks.map((task) => ({
+          workOrderId: id,
+          description: task.description,
+          startTime: timeStringToDate(task.startTime),
+          endTime: timeStringToDate(task.endTime),
+        }))
+      ),
+      tx.insert(workOrderLabor).values(
+        data.labor.map((entry) => ({
+          workOrderId: id,
+          technicianName: entry.technicianName,
+          entryTime: timeStringToDate(entry.entryTime),
+          exitTime: timeStringToDate(entry.exitTime),
+        }))
+      ),
+    ]
+
+    if (data.materials.length > 0) {
+      inserts.push(
+        tx.insert(workOrderMaterials).values(
+          data.materials.map((material) => ({
+            workOrderId: id,
+            units: material.units,
+            description: material.description,
+            project: material.project || null,
+            supply: material.supply || null,
+          }))
+        )
+      )
+    }
+
+    await Promise.all(inserts)
   })
 }

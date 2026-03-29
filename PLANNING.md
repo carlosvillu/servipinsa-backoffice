@@ -218,34 +218,34 @@ Antes de empezar, necesitas tener configurado:
 
 #### Task 5.1: Servicio de edición
 
-- [ ] Añadir a `app/services/workOrders.server.ts`:
+- [x] Añadir a `app/services/workOrders.server.ts`:
   - `updateWorkOrder(id, data, userId, role)` — actualiza un parte (verifica que no esté validado y que el usuario tenga permisos)
   - `canEditWorkOrder(workOrder, userId, role)` — helper que devuelve boolean
-- [ ] La actualización reemplaza las sub-entidades (tasks, labor, materials) en una transacción
-- [ ] Verificar que `npm run typecheck` pasa
+- [x] La actualización reemplaza las sub-entidades (tasks, labor, materials) en una transacción
+- [x] Verificar que `npm run typecheck` pasa
 
 #### Task 5.2: Página de detalle
 
-- [ ] Crear componente `app/components/WorkOrderDetail.tsx` — vista de solo lectura organizada por secciones
-- [ ] Crear componente `app/components/WorkOrderValidations.tsx` — lista cronológica de validaciones (nombre + fecha/hora)
-- [ ] Crear `app/routes/work-orders.$id.tsx` con loader que llame a `getWorkOrderById`
-- [ ] Registrar ruta `/work-orders/:id` en `app/routes.ts`
-- [ ] Mostrar botón "Editar" solo si el parte no está validado y el usuario tiene permisos
-- [ ] Mostrar botón "Validar Parte" solo si el usuario es MANAGER
-- [ ] Indicador visual claro de estado: "Pendiente" vs "Validado"
-- [ ] Test E2E: ver detalle de un parte con todos sus datos
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Crear componente `app/components/WorkOrderDetail.tsx` — vista de solo lectura organizada por secciones
+- [x] Crear componente `app/components/WorkOrderValidations.tsx` — lista cronológica de validaciones (nombre + fecha/hora)
+- [x] Crear `app/routes/work-orders.$id.tsx` con loader que llame a `getWorkOrderById`
+- [x] Registrar ruta `/work-orders/:id` en `app/routes.ts`
+- [x] Mostrar botón "Editar" solo si el parte no está validado y el usuario tiene permisos
+- [x] Mostrar botón "Validar Parte" solo si el usuario es MANAGER
+- [x] Indicador visual claro de estado: "Pendiente" vs "Validado"
+- [x] Test E2E: ver detalle de un parte con todos sus datos
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
 
 #### Task 5.3: Página de edición
 
-- [ ] Crear `app/routes/work-orders.$id.edit.tsx` con loader (verificar permisos, cargar parte) y action (validar, actualizar, redirect a detalle)
-- [ ] Registrar ruta `/work-orders/:id/edit` en `app/routes.ts`
-- [ ] Reutilizar `WorkOrderForm.tsx` con datos pre-rellenados
-- [ ] Si el parte está validado, redirect al detalle (no permitir edición)
-- [ ] EMPLEADO solo puede editar sus propios partes (verificar en loader y action)
-- [ ] MANAGER puede editar cualquier parte no validado
-- [ ] Test E2E: editar un parte existente y verificar los cambios
-- [ ] Test E2E: intentar editar un parte validado redirige al detalle
+- [x] Crear `app/routes/work-orders.$id.edit.tsx` con loader (verificar permisos, cargar parte) y action (validar, actualizar, redirect a detalle)
+- [x] Registrar ruta `/work-orders/:id/edit` en `app/routes.ts`
+- [x] Reutilizar `WorkOrderForm.tsx` con datos pre-rellenados
+- [x] Si el parte está validado, redirect al detalle (no permitir edición)
+- [x] EMPLEADO solo puede editar sus propios partes (verificar en loader y action)
+- [x] MANAGER puede editar cualquier parte no validado
+- [x] Test E2E: editar un parte existente y verificar los cambios
+- [x] Test E2E: intentar editar un parte validado redirige al detalle
 - [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
 
 ---
@@ -398,9 +398,9 @@ Antes de empezar, necesitas tener configurado:
 | 4 | 4.1 Servicio creación partes | ✅ Complete | createWorkOrder con transacción Drizzle, schema Zod en app/schemas/workOrder.ts |
 | 4 | 4.2 Formulario creación | ✅ Complete | WorkOrderForm + 3 secciones dinámicas + useWorkOrderForm hook |
 | 4 | 4.3 Ruta de creación | ✅ Complete | work-orders.new.tsx, 6 tests E2E, PR #2 |
-| 5 | 5.1 Servicio edición | ⬜ Not Started | |
-| 5 | 5.2 Página detalle | ⬜ Not Started | |
-| 5 | 5.3 Página edición | ⬜ Not Started | |
+| 5 | 5.1 Servicio edición | ✅ Complete | canEditWorkOrder, updateWorkOrder, dateToTimeString |
+| 5 | 5.2 Página detalle | ✅ Complete | WorkOrderDetail, WorkOrderValidations, 4 tests E2E |
+| 5 | 5.3 Página edición | ✅ Complete | Reutiliza WorkOrderForm con defaultValues, 4 tests E2E |
 | 6 | 6.1 Servicio validación | ⬜ Not Started | |
 | 6 | 6.2 UI validación | ⬜ Not Started | |
 | 7 | 7.1 Servicio gestión usuarios | ⬜ Not Started | |
