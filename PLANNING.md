@@ -311,20 +311,20 @@ Antes de empezar, necesitas tener configurado:
 
 #### Task 8.1: Navegación principal
 
-- [ ] Actualizar `app/components/Header.tsx` con navegación de Servipinsa: logo/nombre, enlace "Partes" (dashboard), enlace "Usuarios" (solo MANAGER), menú de usuario con logout
-- [ ] Eliminar `ThemeToggle` y `LanguageSelector` del header (ya no aplican)
-- [ ] La navegación debe ser responsive (hamburger menu en móvil)
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
-- [ ] Verificar que `npm run test:e2e` pasa
+- [x] Actualizar `app/components/Header.tsx` con navegación de Servipinsa: logo/nombre, enlace "Partes" (dashboard), enlace "Usuarios" (solo MANAGER), menú de usuario con logout
+- [x] Eliminar `ThemeToggle` y `LanguageSelector` del header (ya no aplican)
+- [x] La navegación debe ser responsive (hamburger menu en móvil)
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Verificar que `npm run test:e2e` pasa
 
 #### Task 8.2: Feedback visual y estados vacíos
 
-- [ ] Añadir toasts (sonner) para acciones exitosas: parte creado, parte editado, parte validado, usuario creado
-- [ ] Añadir estados vacíos en el dashboard ("No hay partes de trabajo. Crea el primero.")
-- [ ] Añadir estados de carga en formularios (botón deshabilitado mientras envía)
-- [ ] Verificar responsive en viewports móvil (320-400px) y tablet
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
-- [ ] Verificar que `npm run test:e2e` pasa
+- [x] Añadir toasts (sonner) para acciones exitosas: parte creado, parte editado, parte validado, usuario creado
+- [x] Añadir estados vacíos en el dashboard ("No hay partes de trabajo. Crea el primero.")
+- [x] Añadir estados de carga en formularios (botón deshabilitado mientras envía)
+- [x] Verificar responsive en viewports móvil (320-400px) y tablet
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Verificar que `npm run test:e2e` pasa
 
 ---
 
@@ -405,7 +405,7 @@ Antes de empezar, necesitas tener configurado:
 | 6 | 6.2 UI validación | ✅ Complete | ValidateWorkOrderDialog + action + 2 tests E2E |
 | 7 | 7.1 Servicio gestión usuarios | ✅ Complete | listUsers, createUser, promoteToManager |
 | 7 | 7.2 Página gestión usuarios | ✅ Complete | UserList, CreateUserDialog, PromoteUserDialog, 4 tests E2E |
-| 8 | 8.1 Navegación principal | ⬜ Not Started | |
-| 8 | 8.2 Feedback y polish | ⬜ Not Started | |
+| 8 | 8.1 Navegación principal | ✅ Complete | MobileSidebar + hamburger menu, 2 tests E2E |
+| 8 | 8.2 Feedback y polish | ✅ Complete | Toasts, empty state CTA, loading states, 4 tests E2E |
 
 **Status Legend:** ⬜ Not Started | 🔄 In Progress | ✅ Complete | ⏸️ Blocked

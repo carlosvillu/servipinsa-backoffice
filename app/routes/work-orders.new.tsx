@@ -40,7 +40,7 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   await createWorkOrder(parsed.data, authSession.user.id)
-  throw redirect('/')
+  throw redirect('/?toast=created')
 }
 
 export default function WorkOrderNewPage() {

@@ -1,4 +1,6 @@
-import { data, Link } from 'react-router'
+import { useEffect, useRef } from 'react'
+import { data, Link, useFetcher } from 'react-router'
+import { toast } from 'sonner'
 import type { Route } from './+types/work-orders.$id'
 import { requireAuth } from '~/lib/auth.server'
 import { requireManager } from '~/lib/authorization.server'
@@ -14,6 +16,7 @@ import { WorkOrderDetail } from '~/components/WorkOrderDetail'
 import { WorkOrderValidations } from '~/components/WorkOrderValidations'
 import { ValidateWorkOrderDialog } from '~/components/ValidateWorkOrderDialog'
 import { Button } from '~/components/ui/button'
+import { useToastFromSearchParams } from '~/hooks/useToastFromSearchParams'
 
 export function meta({ data }: Route.MetaArgs) {
   const client = data?.workOrder?.client ?? 'Parte'
@@ -83,6 +86,22 @@ export async function action({ request, params }: Route.ActionArgs) {
 export default function WorkOrderDetailPage({
   loaderData,
 }: Route.ComponentProps) {
+  useToastFromSearchParams({ updated: 'Parte de trabajo actualizado correctamente' })
+  const validateFetcher = useFetcher<{ ok?: boolean }>({ key: 'validate-work-order' })
+  const validationToastShown = useRef(false)
+  const workOrderId = loaderData.workOrder.id
+
+  useEffect(() => {
+    validationToastShown.current = false
+  }, [workOrderId])
+
+  useEffect(() => {
+    if (validateFetcher.data?.ok && validateFetcher.state === 'idle' && !validationToastShown.current) {
+      validationToastShown.current = true
+      toast.success('Parte de trabajo validado correctamente')
+    }
+  }, [validateFetcher.data, validateFetcher.state])
+
   const { workOrder, canEdit, canValidate } = loaderData
 
   return (

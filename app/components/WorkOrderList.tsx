@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { ClipboardList } from 'lucide-react'
 import { StatusBadge } from '~/components/StatusBadge'
 import { formatDate } from '~/lib/dates'
 
@@ -19,10 +20,20 @@ export function WorkOrderList({
 }) {
   if (items.length === 0) {
     return (
-      <div className="border border-[#383838] bg-white p-8 text-center">
-        <p className="font-mono text-[#757575] uppercase tracking-wider text-sm">
-          No hay partes de trabajo.
+      <div className="border border-[#383838] bg-white p-12 text-center flex flex-col items-center gap-4">
+        <ClipboardList size={48} stroke="#757575" strokeWidth={1.5} />
+        <p className="font-mono text-[#383838] uppercase tracking-wider text-sm">
+          No hay partes de trabajo
         </p>
+        <p className="font-sans text-sm text-[#757575]">
+          Crea tu primer parte de trabajo para empezar.
+        </p>
+        <Link
+          to="/work-orders/new"
+          className="mt-2 inline-block font-mono uppercase text-sm bg-[#383838] text-[#F4EFEA] px-6 py-3 border border-[#383838] hover:bg-[#2BA5FF] hover:border-[#2BA5FF] transition-all"
+        >
+          Crear Parte de Trabajo
+        </Link>
       </div>
     )
   }
