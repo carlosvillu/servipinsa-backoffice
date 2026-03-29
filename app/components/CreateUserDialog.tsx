@@ -9,14 +9,14 @@ import {
   DialogClose,
 } from '~/components/ui/dialog'
 import { Button } from '~/components/ui/button'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
 
 export function CreateUserDialog() {
   const fetcher = useFetcher<{ ok?: boolean; error?: string }>()
   const isSubmitting = fetcher.state !== 'idle'
 
-  // Dialog is uncontrolled. On success, the route revalidates and
-  // the page re-renders. We use fetcher.Form which handles this.
-  // After successful creation, we close via DialogClose triggered by JS.
+  // Key swap forces remount to reset form + close dialog after success
   const succeeded = fetcher.data?.ok === true && fetcher.state === 'idle'
 
   return (
@@ -29,49 +29,21 @@ export function CreateUserDialog() {
         <fetcher.Form method="post" className="flex flex-col gap-4">
           <input type="hidden" name="_action" value="create" />
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="create-name"
-              className="font-mono text-xs uppercase tracking-wider text-[#757575]"
-            >
-              Nombre
-            </label>
-            <input
-              id="create-name"
-              name="name"
-              type="text"
-              required
-              className="border border-[#E0E0E0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#383838]"
-            />
+            <Label htmlFor="create-name">Nombre</Label>
+            <Input id="create-name" name="name" type="text" required />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="create-email"
-              className="font-mono text-xs uppercase tracking-wider text-[#757575]"
-            >
-              Email
-            </label>
-            <input
-              id="create-email"
-              name="email"
-              type="email"
-              required
-              className="border border-[#E0E0E0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#383838]"
-            />
+            <Label htmlFor="create-email">Email</Label>
+            <Input id="create-email" name="email" type="email" required />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="create-password"
-              className="font-mono text-xs uppercase tracking-wider text-[#757575]"
-            >
-              Contraseña
-            </label>
-            <input
+            <Label htmlFor="create-password">Contraseña</Label>
+            <Input
               id="create-password"
               name="password"
               type="password"
               required
               minLength={8}
-              className="border border-[#E0E0E0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#383838]"
             />
           </div>
           {fetcher.data?.error && (

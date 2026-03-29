@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
+import type { UserRole } from '~/db/schema/users'
 import { RoleBadge } from '~/components/RoleBadge'
 
 export type UserListItemData = {
   id: string
   name: string | null
   email: string
-  role: string
-  createdAt: string
+  role: UserRole
 }
 
 type UserListProps = {

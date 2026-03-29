@@ -1,6 +1,7 @@
 import { data } from 'react-router'
 import type { Route } from './+types/users'
 import { requireManager } from '~/lib/authorization.server'
+import type { UserRole } from '~/db/schema/users'
 import {
   listUsers,
   createUser,
@@ -19,8 +20,10 @@ export async function loader({ request }: Route.LoaderArgs) {
   const userList = await listUsers()
   return {
     users: userList.map((u) => ({
-      ...u,
-      createdAt: u.createdAt.toISOString(),
+      id: u.id,
+      email: u.email,
+      name: u.name,
+      role: u.role as UserRole,
     })),
   }
 }
@@ -31,9 +34,9 @@ export async function action({ request }: Route.ActionArgs) {
   const intent = formData.get('_action')
 
   if (intent === 'create') {
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
-    const name = formData.get('name') as string
+    const email = String(formData.get('email') ?? '')
+    const password = String(formData.get('password') ?? '')
+    const name = String(formData.get('name') ?? '')
     const result = await createUser({ email, password, name })
     if (!result.success) {
       return data({ error: result.error }, { status: 400 })
