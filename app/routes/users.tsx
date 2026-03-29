@@ -1,4 +1,6 @@
-import { data } from 'react-router'
+import { useEffect } from 'react'
+import { data, useActionData } from 'react-router'
+import { toast } from 'sonner'
 import type { Route } from './+types/users'
 import { requireManager } from '~/lib/authorization.server'
 import type { UserRole } from '~/db/schema/users'
@@ -41,7 +43,7 @@ export async function action({ request }: Route.ActionArgs) {
     if (!result.success) {
       return data({ error: result.error }, { status: 400 })
     }
-    return data({ ok: true })
+    return data({ ok: true, intent: 'create' as const })
   }
 
   if (intent === 'promote') {
@@ -50,14 +52,26 @@ export async function action({ request }: Route.ActionArgs) {
       return data({ error: 'userId requerido' }, { status: 400 })
     }
     await promoteToManager(userId)
-    return data({ ok: true })
+    return data({ ok: true, intent: 'promote' as const })
   }
 
   return data({ error: 'Acción desconocida' }, { status: 400 })
 }
 
 export default function UsersPage({ loaderData }: Route.ComponentProps) {
+  const actionData = useActionData<typeof action>()
   const { users } = loaderData
+
+  useEffect(() => {
+    if (actionData && 'ok' in actionData && actionData.ok) {
+      if (actionData.intent === 'create') {
+        toast.success('Usuario creado correctamente')
+      }
+      if (actionData.intent === 'promote') {
+        toast.success('Usuario promovido a Manager correctamente')
+      }
+    }
+  }, [actionData])
 
   return (
     <main className="w-full max-w-6xl mx-auto px-6 md:px-12 py-8">

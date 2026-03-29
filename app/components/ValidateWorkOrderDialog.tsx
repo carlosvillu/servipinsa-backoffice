@@ -13,7 +13,7 @@ import {
 import { Button } from '~/components/ui/button'
 
 export function ValidateWorkOrderDialog() {
-  const fetcher = useFetcher()
+  const fetcher = useFetcher({ key: 'validate-work-order' })
   const isSubmitting = fetcher.state !== 'idle'
 
   return (

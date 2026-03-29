@@ -77,7 +77,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   }
 
   await updateWorkOrder(params.id, parsed.data, authSession.user.id, role)
-  throw redirect(`/work-orders/${params.id}`)
+  throw redirect(`/work-orders/${params.id}?toast=updated`)
 }
 
 export default function WorkOrderEditPage({ loaderData }: Route.ComponentProps) {

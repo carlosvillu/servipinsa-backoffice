@@ -6,6 +6,7 @@ import type { UserRole } from '~/db/schema/users'
 import { WorkOrderList } from '~/components/WorkOrderList'
 import { Pagination } from '~/components/Pagination'
 import { Button } from '~/components/ui/button'
+import { useToastFromSearchParams } from '~/hooks/useToastFromSearchParams'
 
 export function meta() {
   return [
@@ -43,6 +44,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
+  useToastFromSearchParams({ created: 'Parte de trabajo creado correctamente' })
   const { workOrders, pagination } = loaderData
 
   return (
