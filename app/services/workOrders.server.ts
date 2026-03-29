@@ -196,6 +196,25 @@ export function canEditWorkOrder(
   return false
 }
 
+export async function validateWorkOrder(
+  workOrderId: string,
+  managerId: string
+): Promise<string> {
+  const rows = await db
+    .insert(workOrderValidations)
+    .values({ workOrderId, validatedBy: managerId })
+    .onConflictDoNothing({
+      target: [workOrderValidations.workOrderId, workOrderValidations.validatedBy],
+    })
+    .returning({ id: workOrderValidations.id })
+
+  if (rows.length === 0) {
+    throw new Response('Ya has validado este parte', { status: 409 })
+  }
+
+  return rows[0].id
+}
+
 export async function updateWorkOrder(
   id: string,
   data: WorkOrderFormData,

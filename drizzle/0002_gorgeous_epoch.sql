@@ -1,0 +1,1 @@
+ALTER TABLE "work_order_validations" ADD CONSTRAINT "work_order_validations_work_order_id_validated_by_unique" UNIQUE("work_order_id","validated_by");

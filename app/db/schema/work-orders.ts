@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, integer } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, text, timestamp, integer, unique } from 'drizzle-orm/pg-core'
 import { users } from './users'
 
 export const workOrders = pgTable('work_orders', {
@@ -45,16 +45,20 @@ export const workOrderMaterials = pgTable('work_order_materials', {
   supply: text('supply'),
 })
 
-export const workOrderValidations = pgTable('work_order_validations', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  workOrderId: uuid('work_order_id')
-    .notNull()
-    .references(() => workOrders.id, { onDelete: 'cascade' }),
-  validatedBy: uuid('validated_by')
-    .notNull()
-    .references(() => users.id),
-  validatedAt: timestamp('validated_at').notNull().defaultNow(),
-})
+export const workOrderValidations = pgTable(
+  'work_order_validations',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    workOrderId: uuid('work_order_id')
+      .notNull()
+      .references(() => workOrders.id, { onDelete: 'cascade' }),
+    validatedBy: uuid('validated_by')
+      .notNull()
+      .references(() => users.id),
+    validatedAt: timestamp('validated_at').notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.workOrderId, t.validatedBy)]
+)
 
 export type WorkOrder = typeof workOrders.$inferSelect
 export type NewWorkOrder = typeof workOrders.$inferInsert

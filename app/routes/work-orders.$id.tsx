@@ -1,15 +1,18 @@
-import { Link } from 'react-router'
+import { data, Link } from 'react-router'
 import type { Route } from './+types/work-orders.$id'
 import { requireAuth } from '~/lib/auth.server'
+import { requireManager } from '~/lib/authorization.server'
 import type { UserRole } from '~/db/schema/users'
 import {
   getWorkOrderById,
   canEditWorkOrder,
   dateToTimeString,
+  validateWorkOrder,
 } from '~/services/workOrders.server'
 import { StatusBadge } from '~/components/StatusBadge'
 import { WorkOrderDetail } from '~/components/WorkOrderDetail'
 import { WorkOrderValidations } from '~/components/WorkOrderValidations'
+import { ValidateWorkOrderDialog } from '~/components/ValidateWorkOrderDialog'
 import { Button } from '~/components/ui/button'
 
 export function meta({ data }: Route.MetaArgs) {
@@ -29,7 +32,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   }
 
   const canEdit = canEditWorkOrder(workOrder, authSession.user.id, role)
-  const isManager = role === 'MANAGER'
+  const canValidate =
+    role === 'MANAGER' &&
+    !workOrder.validations.some((v) => v.validator.id === authSession.user.id)
 
   return {
     workOrder: {
@@ -65,14 +70,20 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       validationCount: workOrder.validations.length,
     },
     canEdit,
-    isManager,
+    canValidate,
   }
+}
+
+export async function action({ request, params }: Route.ActionArgs) {
+  const authSession = await requireManager(request)
+  await validateWorkOrder(params.id, authSession.user.id)
+  return data({ ok: true })
 }
 
 export default function WorkOrderDetailPage({
   loaderData,
 }: Route.ComponentProps) {
-  const { workOrder, canEdit, isManager } = loaderData
+  const { workOrder, canEdit, canValidate } = loaderData
 
   return (
     <main className="w-full max-w-4xl mx-auto px-6 md:px-12 py-8">
@@ -87,9 +98,7 @@ export default function WorkOrderDetailPage({
           {canEdit && (
             <Button render={<Link to="edit" />}>Editar</Button>
           )}
-          {isManager && workOrder.validationCount === 0 && (
-            <Button disabled>Validar Parte</Button>
-          )}
+          {canValidate && <ValidateWorkOrderDialog />}
         </div>
       </div>
 

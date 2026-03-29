@@ -128,7 +128,8 @@ export async function createAuthSchema(ctx: DbContext): Promise<void> {
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       work_order_id UUID NOT NULL REFERENCES work_orders(id) ON DELETE CASCADE,
       validated_by UUID NOT NULL REFERENCES users(id),
-      validated_at TIMESTAMP NOT NULL DEFAULT now()
+      validated_at TIMESTAMP NOT NULL DEFAULT now(),
+      UNIQUE(work_order_id, validated_by)
     )`
   )
 }

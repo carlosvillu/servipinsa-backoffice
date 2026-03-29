@@ -257,22 +257,22 @@ Antes de empezar, necesitas tener configurado:
 
 #### Task 6.1: Servicio de validación
 
-- [ ] Añadir a `app/services/workOrders.server.ts`:
+- [x] Añadir a `app/services/workOrders.server.ts`:
   - `validateWorkOrder(workOrderId, managerId)` — crea un registro de validación
   - `isWorkOrderValidated(workOrderId)` — devuelve si el parte tiene al menos una validación
-- [ ] Solo usuarios con role MANAGER pueden validar
-- [ ] Verificar que `npm run typecheck` pasa
+- [x] Solo usuarios con role MANAGER pueden validar
+- [x] Verificar que `npm run typecheck` pasa
 
 #### Task 6.2: UI de validación
 
-- [ ] Añadir action de validación en `app/routes/work-orders.$id.tsx` (intent: "validate")
-- [ ] Crear componente `app/components/ValidateWorkOrderDialog.tsx` — AlertDialog de confirmación ("Esta acción bloqueará el parte para edición")
-- [ ] El botón "Validar Parte" abre el diálogo de confirmación
-- [ ] Tras validar, la página se recarga mostrando la nueva validación en el historial
-- [ ] El botón "Editar" desaparece tras la primera validación
-- [ ] Test E2E: MANAGER valida un parte → el parte aparece como "Validado" → botón editar desaparece
-- [ ] Test E2E: EMPLEADO no ve botón "Validar"
-- [ ] Verificar que `npm run typecheck` y `npm run lint` pasan
+- [x] Añadir action de validación en `app/routes/work-orders.$id.tsx` (intent: "validate")
+- [x] Crear componente `app/components/ValidateWorkOrderDialog.tsx` — AlertDialog de confirmación ("Esta acción bloqueará el parte para edición")
+- [x] El botón "Validar Parte" abre el diálogo de confirmación
+- [x] Tras validar, la página se recarga mostrando la nueva validación en el historial
+- [x] El botón "Editar" desaparece tras la primera validación
+- [x] Test E2E: MANAGER valida un parte → el parte aparece como "Validado" → botón editar desaparece
+- [x] Test E2E: EMPLEADO no ve botón "Validar"
+- [x] Verificar que `npm run typecheck` y `npm run lint` pasan
 
 ---
 
@@ -401,8 +401,8 @@ Antes de empezar, necesitas tener configurado:
 | 5 | 5.1 Servicio edición | ✅ Complete | canEditWorkOrder, updateWorkOrder, dateToTimeString |
 | 5 | 5.2 Página detalle | ✅ Complete | WorkOrderDetail, WorkOrderValidations, 4 tests E2E |
 | 5 | 5.3 Página edición | ✅ Complete | Reutiliza WorkOrderForm con defaultValues, 4 tests E2E |
-| 6 | 6.1 Servicio validación | ⬜ Not Started | |
-| 6 | 6.2 UI validación | ⬜ Not Started | |
+| 6 | 6.1 Servicio validación | ✅ Complete | validateWorkOrder + hasManagerValidated |
+| 6 | 6.2 UI validación | ✅ Complete | ValidateWorkOrderDialog + action + 2 tests E2E |
 | 7 | 7.1 Servicio gestión usuarios | ⬜ Not Started | |
 | 7 | 7.2 Página gestión usuarios | ⬜ Not Started | |
 | 8 | 8.1 Navegación principal | ⬜ Not Started | |

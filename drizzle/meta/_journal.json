@@ -15,6 +15,13 @@
       "when": 1774742850834,
       "tag": "0001_bored_wolfsbane",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1774814699378,
+      "tag": "0002_gorgeous_epoch",
+      "breakpoints": true
     }
   ]
 }
