@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSearchParams, useLocation } from 'react-router'
 import { toast } from 'sonner'
 
@@ -8,12 +8,13 @@ export function useToastFromSearchParams(
   const [searchParams] = useSearchParams()
   const { pathname } = useLocation()
   const toastKey = searchParams.get('toast')
-  const shownRef = useRef<string | null>(null)
+  const keys = Object.keys(messages).sort().join(',')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const stableMessages = useMemo(() => messages, [keys])
 
   useEffect(() => {
-    if (toastKey && messages[toastKey] && shownRef.current !== toastKey) {
-      shownRef.current = toastKey
-      toast.success(messages[toastKey])
+    if (toastKey && stableMessages[toastKey]) {
+      toast.success(stableMessages[toastKey])
       const newParams = new URLSearchParams(searchParams)
       newParams.delete('toast')
       const qs = newParams.toString()
@@ -23,5 +24,5 @@ export function useToastFromSearchParams(
         pathname + (qs ? `?${qs}` : '')
       )
     }
-  }, [toastKey, messages, searchParams, pathname])
+  }, [toastKey, stableMessages, searchParams, pathname])
 }

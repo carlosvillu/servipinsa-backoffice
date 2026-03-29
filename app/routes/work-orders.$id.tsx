@@ -89,6 +89,11 @@ export default function WorkOrderDetailPage({
   useToastFromSearchParams({ updated: 'Parte de trabajo actualizado correctamente' })
   const validateFetcher = useFetcher<{ ok?: boolean }>({ key: 'validate-work-order' })
   const validationToastShown = useRef(false)
+  const workOrderId = loaderData.workOrder.id
+
+  useEffect(() => {
+    validationToastShown.current = false
+  }, [workOrderId])
 
   useEffect(() => {
     if (validateFetcher.data?.ok && validateFetcher.state === 'idle' && !validationToastShown.current) {

@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { ClipboardList } from 'lucide-react'
 import { StatusBadge } from '~/components/StatusBadge'
 import { formatDate } from '~/lib/dates'
 
@@ -20,24 +21,7 @@ export function WorkOrderList({
   if (items.length === 0) {
     return (
       <div className="border border-[#383838] bg-white p-12 text-center flex flex-col items-center gap-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="48"
-          height="48"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#757575"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-          <path d="M12 11h4" />
-          <path d="M12 16h4" />
-          <path d="M8 11h.01" />
-          <path d="M8 16h.01" />
-        </svg>
+        <ClipboardList size={48} stroke="#757575" strokeWidth={1.5} />
         <p className="font-mono text-[#383838] uppercase tracking-wider text-sm">
           No hay partes de trabajo
         </p>

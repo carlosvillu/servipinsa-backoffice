@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
+import { Menu } from 'lucide-react'
 import { authClient } from '~/lib/auth.client'
 import { Button } from '~/components/ui/button'
 import { UserDropdown } from '~/components/UserDropdown'
@@ -39,10 +40,10 @@ export function Header({ session, user }: HeaderProps) {
               <>
                 <button
                   onClick={() => setSidebarOpen(true)}
-                  className="md:hidden font-mono text-[#383838] text-2xl leading-none p-2"
+                  className="md:hidden text-[#383838] p-2"
                   aria-label="Abrir menu"
                 >
-                  &#9776;
+                  <Menu size={24} />
                 </button>
                 <div className="hidden md:block">
                   <UserDropdown user={user} onLogout={handleLogout} />
