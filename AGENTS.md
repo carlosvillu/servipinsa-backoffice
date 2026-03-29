@@ -59,6 +59,7 @@ If the user explicitly names a doc file, the agent MUST read it before answering
 ### Core Principles
 
 - **Minimal Code:** Write ONLY what's requested. THE ONLY CODE THAT NEVER FAILS IS CODE NOT WRITTEN.
+- **Base UI First:** Antes de crear cualquier componente nuevo en `app/components/`, el agente **MUST** consultar la documentación de Base UI (`https://base-ui.com/llms.txt` via WebFetch) para verificar si existe un componente equivalente. Usar componentes Base UI como base siempre que estén disponibles. Solo crear componentes con HTML nativo cuando Base UI no ofrezca una alternativa.
 - **NPX:** Always use `-y` flag
 - **GitHub:** Use `gh` CLI for GitHub tasks
 
