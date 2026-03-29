@@ -102,31 +102,7 @@ END
 - If the file is a **component** (`app/components/*`): pseudocode MUST be rendering-focused and list the hooks it consumes.
 ````
 
-#### 4. I18N Section (Required for UI tasks)
-
-If the task involves UI changes, include an i18n section:
-
-```markdown
-### I18N
-
-#### Existing keys to reuse
-- `login_title` - For the page title
-- `email_label` - For the email field
-
-#### New keys to create
-| Key | English | Spanish |
-|-----|---------|---------|
-| `new_feature_title` | My Feature | Mi Funcionalidad |
-| `new_feature_desc` | Description here | Descripción aquí |
-```
-
-**Guidelines:**
-- Check `app/locales/en.json` for existing keys before creating new ones
-- Use semantic key names (based on meaning, not position)
-- Use `snake_case` with logical prefixes (`*_title`, `*_label`, `*_error`, etc.)
-- See `docs/I18N.md` for full documentation
-
-#### 5. E2E Test Plan
+#### 4. E2E Test Plan
 - List of test scenarios that guarantee the feature works
 - Each test should include:
   - **Test name**

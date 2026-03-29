@@ -1,8 +1,4 @@
-"use client"
-
 import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
 import {
   Controller,
   FormProvider,
@@ -90,7 +86,7 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
 function FormLabel({
   className,
   ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+}: React.ComponentProps<'label'>) {
   const { error, formItemId } = useFormField()
 
   return (
@@ -104,22 +100,18 @@ function FormLabel({
   )
 }
 
-function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
+function FormControl({ children, ...props }: { children: React.ReactElement } & Record<string, unknown>) {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
-  return (
-    <Slot
-      data-slot="form-control"
-      id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
-  )
+  return React.cloneElement(children, {
+    'data-slot': 'form-control',
+    id: formItemId,
+    'aria-describedby': !error
+      ? formDescriptionId
+      : `${formDescriptionId} ${formMessageId}`,
+    'aria-invalid': !!error,
+    ...props,
+  } as React.HTMLAttributes<HTMLElement>)
 }
 
 function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
@@ -129,7 +121,7 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="form-description"
       id={formDescriptionId}
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-[#757575] text-sm", className)}
       {...props}
     />
   )

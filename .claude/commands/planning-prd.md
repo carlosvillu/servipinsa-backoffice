@@ -29,7 +29,6 @@ Before planning, explore the existing codebase to understand:
 - Authentication setup (read `docs/AUTH.md` if auth is involved)
 - Database schema (read `docs/DATABASE.md` if database changes are involved)
 - Testing patterns (read `docs/TESTING.md`)
-- I18N setup (read `docs/I18N.md` if UI text is involved)
 
 ### Step 3: Ask Clarifying Questions
 
@@ -214,12 +213,7 @@ Antes de empezar, necesitas tener configurado:
    - E2E tests are part of the task itself, not a separate phase
    - Each user-facing change should include its regression test in the same task
 
-5. **I18N Integration:**
-   - i18n keys MUST be part of the UI task itself, never a separate phase
-   - Each UI task checklist must include creating/updating the necessary i18n keys
-   - You cannot test UI without i18n keys - they're part of the implementation, not an afterthought
-
-6. **Incremental Delivery:**
+5. **Incremental Delivery:**
    - Prefer working features over partial implementations
    - Each phase should deliver usable functionality
    - MVP features before premium features

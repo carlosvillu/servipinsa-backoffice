@@ -45,7 +45,6 @@ Then, based on the task domain, read relevant docs:
 - **Database/Drizzle/SQL:** `docs/DATABASE.md`
 - **Deployment/env vars:** `docs/DEPLOYMENT.md`
 - **Testing/Playwright:** `docs/TESTING.md`
-- **I18N/translations/UI text:** `docs/I18N.md`
 - **UI/UX tasks:** `docs/FRONTEND_DESIGN.md` AND `docs/STYLE_GUIDE.md`
 
 ### Step 4: Explore the Codebase
@@ -54,7 +53,6 @@ Before asking questions, understand the current state:
 - Use `Glob` and `Grep` to explore relevant parts of the codebase
 - Identify existing components, services, hooks that could be reused
 - Understand the current implementation patterns in use
-- Check `app/locales/en.json` for existing i18n keys if UI is involved
 
 ### Step 5: Information Gathering (CRITICAL)
 

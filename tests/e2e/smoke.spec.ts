@@ -1,26 +1,22 @@
 import { test, expect } from '../fixtures/app.fixture'
+import { createAuthSession, setAuthCookie } from '../helpers/auth'
 
 test.describe('Home Page', () => {
-  test('should load home page successfully', async ({ page }) => {
+  test('should redirect unauthenticated users to login', async ({ page }) => {
     await page.goto('/')
-
-    // Verify page loaded (basic smoke test)
-    await expect(page).toHaveTitle(/.*/)
-
-    // Verify page has basic content
-    const body = await page.locator('body')
-    await expect(body).toBeVisible()
+    await page.waitForURL(/\/auth\/login/, { timeout: 10000 })
+    expect(page.url()).toContain('/auth/login')
   })
 
-  test('should have working navigation', async ({ page }) => {
+  test('should load home page for authenticated users', async ({ page, context, baseURL }) => {
+    const timestamp = Date.now()
+    const { token } = await createAuthSession(baseURL!, {
+      email: `test-smoke-${timestamp}@example.com`,
+      password: 'TestPassword123!',
+    })
+    await setAuthCookie(context, token)
+
     await page.goto('/')
-
-    // Check that header is present
-    const header = await page.locator('header')
-    await expect(header).toBeVisible()
-
-    // Check that footer is present
-    const footer = await page.locator('footer')
-    await expect(footer).toBeVisible()
+    await expect(page).toHaveTitle(/Servipinsa/)
   })
 })

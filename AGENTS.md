@@ -2,11 +2,11 @@
 
 ## Overview
 
-[PROJECT_NAME] is a generic SaaS template built with modern web technologies. It provides a solid foundation for building production-ready web applications with authentication, database integration, and internationalization out of the box.
+Servipinsa es una aplicación de gestión de partes de trabajo. Todo el UI está en español. No hay internacionalización (i18n) — los textos van hardcodeados en español directamente en los componentes.
 
 ## Tech Stack
 
-React Router 7 | React 19 | Vite | Tailwind CSS 4 | shadcn/ui | TypeScript | Playwright + TestContainers | PostgreSQL | Drizzle ORM | Better Auth
+React Router 7 | React 19 | Vite | Tailwind CSS 4 | Base UI | TypeScript | Playwright + TestContainers | PostgreSQL | Drizzle ORM | Better Auth
 
 ## Commands
 
@@ -27,7 +27,6 @@ Consult these docs when needed:
 - **`docs/TASK_PLANNING.md`** - Planning file structure and examples
 - **`docs/TESTING.md`** - TestContainers, semantic fixtures, E2E helpers
 - **`docs/KNOWN_ISSUES.md`** - Lessons learned from bugfixes, edge cases, and limitations to avoid repeating mistakes
-- **`docs/I18N.md`** - Internationalization setup, adding literals, adding languages
 
 ### When to read each doc (MANDATORY)
 
@@ -46,7 +45,7 @@ Domain mapping:
 - **Database / Drizzle / SQL → `docs/DATABASE.md`**
 - **Deployment / env vars → `docs/DEPLOYMENT.md`**
 - **Testing / Playwright / TestContainers → `docs/TESTING.md`**
-- **I18N / translations / UI text → `docs/I18N.md`**
+- **Base UI components / API → `https://base-ui.com/llms.txt`** (fetch with WebFetch when working on UI components)
 
 UI/UX tasks MUST read both:
 
@@ -114,7 +113,7 @@ If the user explicitly names a doc file, the agent MUST read it before answering
 - **`app/lib/`:** Framework-agnostic code only
 - **`app/hooks/`:** React-specific code (useState, useEffect, etc.)
 - **SOLID:** Small files, single responsibility
-- **Validation:** Always use Zod for form validation (consistent with shadcn/ui forms)
+- **Validation:** Always use Zod for form validation (consistent with Base UI forms)
 - **React Hooks:** Never call hooks conditionally. If you need early returns, build safe defaults for hook inputs or split into smaller components.
 - **Exports:** Avoid barrel exports that obscure boundaries in feature areas; prefer explicit imports to keep architecture and dependency direction obvious.
 

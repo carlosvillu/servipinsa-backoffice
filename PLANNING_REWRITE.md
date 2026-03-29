@@ -4,7 +4,7 @@
 
 | Decision | Eleccion |
 |----------|----------|
-| Design System | Neutral/minimal shadcn defaults |
+| Design System | Neutral/minimal Base UI defaults |
 | RAG/Vector | Eliminar completamente |
 | Billing/Stripe | Eliminar completamente |
 | Roles | Eliminar completamente |
@@ -193,7 +193,7 @@ Mantener solo:
 ### 5.1 Actualizar `app/app.css`
 
 - [x] Eliminar paleta editorial (paper, pearl, silver, slate, graphite, ink)
-- [x] Añadir defaults neutrales de shadcn
+- [x] Añadir defaults neutrales de Base UI
 - [x] Eliminar referencia a fuente Cormorant Garamond
 - [x] Usar fuentes Inter/system
 

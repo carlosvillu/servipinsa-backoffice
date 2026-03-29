@@ -1,11 +1,11 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: saas-template-db
+    container_name: servipinsa-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: saas_template
+      POSTGRES_DB: servipinsa
     ports:
       - "5432:5432"
     volumes:

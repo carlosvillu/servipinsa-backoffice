@@ -6,7 +6,7 @@ A production-ready SaaS template built with modern web technologies. Provides au
 
 - **Framework:** React Router 7 + React 19
 - **Build Tool:** Vite
-- **Styling:** Tailwind CSS 4 + shadcn/ui
+- **Styling:** Tailwind CSS 4 + Base UI
 - **Language:** TypeScript
 - **Database:** PostgreSQL + Drizzle ORM
 - **Auth:** Better Auth
@@ -18,9 +18,7 @@ A production-ready SaaS template built with modern web technologies. Provides au
 - Email + Google OAuth authentication
 - Protected routes with role-based access
 - PostgreSQL database with Drizzle ORM
-- Internationalization (i18n) with react-i18next
-- Dark/Light theme support
-- Responsive mobile-first design
+- Responsive mobile-first design (estilo Refined Brutalism)
 - Comprehensive E2E testing with TestContainers
 - Type-safe environment variables
 - Production-ready deployment configuration
@@ -123,14 +121,13 @@ App runs at `http://localhost:2025`
 app/
 ├── routes/          # Route components (manual registration in routes.ts)
 ├── components/      # React components
-│   ├── ui/         # shadcn/ui base components
+│   ├── ui/         # Base UI base components
 │   └── landing/    # Landing page components
 ├── db/             # Database connection and schema
 │   ├── index.ts    # Drizzle client
 │   └── schema/     # Database schema definitions
 ├── lib/            # Framework-agnostic utilities
 ├── hooks/          # React hooks
-├── locales/        # i18n translation files
 └── root.tsx        # Root layout
 
 tests/
@@ -143,7 +140,6 @@ docs/               # Project documentation
 ├── DATABASE.md     # Database conventions
 ├── DEPLOYMENT.md   # Deployment guide
 ├── TESTING.md      # Testing guide
-├── I18N.md         # Internationalization guide
 └── STYLE_GUIDE.md  # UI/UX style guide
 
 drizzle/            # Generated migration files
@@ -157,7 +153,6 @@ Comprehensive documentation is available in the `/docs` folder:
 - **[DATABASE.md](docs/DATABASE.md)** - Database setup, schema management, and Drizzle conventions
 - **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** - Deployment configuration and environment variables
 - **[TESTING.md](docs/TESTING.md)** - E2E testing with Playwright and TestContainers
-- **[I18N.md](docs/I18N.md)** - Internationalization setup and adding translations
 - **[STYLE_GUIDE.md](docs/STYLE_GUIDE.md)** - UI design system and component guidelines
 
 ## Architecture Principles

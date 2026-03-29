@@ -6,9 +6,11 @@ export const users = pgTable('users', {
   name: text('name'),
   emailVerified: boolean('email_verified').default(false),
   image: text('image'),
+  role: text('role').notNull().default('EMPLEADO'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })
 
 export type User = typeof users.$inferSelect
 export type NewUser = typeof users.$inferInsert
+export type UserRole = 'MANAGER' | 'EMPLEADO'

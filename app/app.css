@@ -4,6 +4,16 @@
 @theme {
   /* Neutral system fonts */
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Brand color tokens */
+  --color-ink: #383838;
+  --color-paper: #F4EFEA;
+  --color-pearl: #FFFFFF;
+  --color-silver: #E0E0E0;
+  --color-slate: #757575;
+  --color-graphite: #4A4A4A;
+  --color-accent: #2BA5FF;
 
   /* shadcn/ui theme mapping */
   --radius-sm: calc(var(--radius) - 4px);
@@ -32,49 +42,33 @@
 
 :root {
   --radius: 0.5rem;
-  /* Neutral light theme - shadcn/ui defaults */
-  --background: 0 0% 100%;
-  --foreground: 0 0% 3.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 3.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 3.9%;
-  --primary: 0 0% 9%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96.1%;
-  --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 96.1%;
-  --muted-foreground: 0 0% 45.1%;
-  --accent: 0 0% 96.1%;
-  --accent-foreground: 0 0% 9%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 89.8%;
-  --input: 0 0% 89.8%;
-  --ring: 0 0% 3.9%;
-}
+  --brand-bg: #F4EFEA;
+  --brand-charcoal: #383838;
+  --brand-blue: #2BA5FF;
+  --brand-grey: #757575;
+  --brand-silver: #E0E0E0;
+  --header-height-mobile: 70px;
+  --header-height-desktop: 90px;
 
-.dark {
-  /* Neutral dark theme - shadcn/ui defaults */
-  --background: 0 0% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 9%;
-  --secondary: 0 0% 14.9%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 14.9%;
-  --muted-foreground: 0 0% 63.9%;
-  --accent: 0 0% 14.9%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62.8% 30.6%;
+  --background: 30 20% 94%;      /* #F4EFEA */
+  --foreground: 0 0% 22%;        /* #383838 */
+  --card: 0 0% 100%;             /* white */
+  --card-foreground: 0 0% 22%;   /* #383838 */
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 22%;
+  --primary: 0 0% 22%;           /* #383838 */
+  --primary-foreground: 30 20% 94%; /* #F4EFEA */
+  --secondary: 0 0% 88%;         /* #E0E0E0 */
+  --secondary-foreground: 0 0% 22%;
+  --muted: 0 0% 88%;
+  --muted-foreground: 0 0% 46%;  /* #757575 */
+  --accent: 204 100% 58%;        /* #2BA5FF */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 1 76% 55%;      /* #E53935 */
   --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 14.9%;
-  --input: 0 0% 14.9%;
-  --ring: 0 0% 83.1%;
+  --border: 0 0% 22%;            /* #383838 - brutalista */
+  --input: 0 0% 22%;             /* #383838 */
+  --ring: 204 100% 58%;          /* #2BA5FF */
 }
 
 html,
@@ -82,11 +76,6 @@ body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   color-scheme: light;
-}
-
-html.dark,
-html.dark body {
-  color-scheme: dark;
 }
 
 @layer base {
@@ -131,6 +120,31 @@ html.dark body {
 
 .animate-progress {
   animation: progress 1s ease-out forwards;
+}
+
+/* Hard Shadow - Refined Brutalism */
+.shadow-hard {
+  box-shadow: 4px 4px 0px 0px #383838;
+}
+
+.shadow-hard-lg {
+  box-shadow: 6px 6px 0px 0px #383838;
+}
+
+.shadow-hard-hover:hover {
+  box-shadow: 6px 6px 0px 0px #383838;
+  transform: translate(-2px, -2px);
+}
+
+.shadow-hard-active:active {
+  box-shadow: 0px 0px 0px 0px #383838;
+  transform: translate(4px, 4px);
+}
+
+/* Stroke Text Effect */
+.stroke-text {
+  -webkit-text-stroke: 1px #383838;
+  color: transparent;
 }
 
 /* Custom Scrollbar */

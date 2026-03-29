@@ -175,9 +175,14 @@ The seeder is automatically exported via `export * from './seeders'`.
 
 | Function                        | Returns         | Description               |
 | ------------------------------- | --------------- | ------------------------- |
-| `seedUser(ctx, key)`            | `string` (uuid) | Creates user from fixture |
+| `seedUser(ctx, key)`            | `string` (uuid) | Creates user from fixture (includes role) |
 | `seedAccount(ctx, key, { userId })` | `string` (uuid) | Creates account           |
 | `seedSession(ctx, key, { userId })` | `string` (uuid) | Creates session           |
+| `seedWorkOrder(ctx, key, { createdBy })` | `string` (uuid) | Creates work order |
+| `seedWorkOrderTask(ctx, key, { workOrderId })` | `string` (uuid) | Creates work order task |
+| `seedWorkOrderLabor(ctx, key, { workOrderId })` | `string` (uuid) | Creates labor entry |
+| `seedWorkOrderMaterials(ctx, key, { workOrderId })` | `string` (uuid) | Creates material entry |
+| `seedWorkOrderValidation(ctx, { workOrderId, validatedBy })` | `string` (uuid) | Creates validation |
 
 ## Testing Authenticated Routes
 
@@ -220,6 +225,7 @@ test('authenticated user can access protected route', async ({ page, context, ap
 | Function | Description |
 | -------- | ----------- |
 | `createAuthSession(baseUrl, options)` | Creates user and session via `/api/auth/sign-up/email`, returns `{ token, userId }` |
+| `createAuthSessionWithRole(baseUrl, ctx, options)` | Same as above, then updates the user's role via SQL. Use for MANAGER users in tests. |
 | `setAuthCookie(context, token)` | Sets the `better-auth.session_token` cookie in browser context |
 
 ### Why This Works
@@ -229,26 +235,6 @@ test('authenticated user can access protected route', async ({ page, context, ap
 3. The response includes a `Set-Cookie` header with the **signed** session token
 4. We extract that token and use it in `setAuthCookie`
 5. The browser sends the properly signed cookie on subsequent requests
-
-### Alternative: Full Signup Flow
-
-For simpler tests, you can use the full UI signup flow:
-
-```typescript
-test('authenticated user can access protected route', async ({ page }) => {
-  await page.goto('/auth/signup')
-  await page.getByPlaceholder('you@email.com').fill('test@example.com')
-  await page.getByPlaceholder('Minimum 8 characters').fill('password123')
-  await page.getByPlaceholder('Repeat your password').fill('password123')
-  await page.getByRole('button', { name: 'Create account' }).click()
-  await page.waitForURL('/')
-
-  await page.goto('/protected')
-  await expect(page.getByRole('heading', { name: /protected/i })).toBeVisible()
-})
-```
-
-This is slower but doesn't require the `appServer` fixture.
 
 ## Troubleshooting
 

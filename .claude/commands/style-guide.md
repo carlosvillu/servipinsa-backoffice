@@ -46,7 +46,7 @@ Explore the existing codebase to extract style patterns:
    ```
    Read components to identify common patterns.
 
-4. **UI Library Components (shadcn/ui):**
+4. **UI Library Components (Base UI):**
    ```
    Glob app/components/ui/**/*.tsx
    ```

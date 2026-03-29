@@ -1,24 +1,32 @@
 import * as React from 'react'
-import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
 
 import { cn } from '~/lib/utils'
 
-const Dialog = DialogPrimitive.Root
+function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
+  return <DialogPrimitive.Root {...props} />
+}
 
-const DialogTrigger = DialogPrimitive.Trigger
+function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+  return <DialogPrimitive.Trigger {...props} />
+}
 
-const DialogPortal = DialogPrimitive.Portal
+function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
+  return <DialogPrimitive.Portal {...props} />
+}
 
-const DialogClose = DialogPrimitive.Close
+function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return <DialogPrimitive.Close {...props} />
+}
 
 function DialogOverlay({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+}: React.ComponentProps<typeof DialogPrimitive.Backdrop>) {
   return (
-    <DialogPrimitive.Overlay
+    <DialogPrimitive.Backdrop
       className={cn(
-        'fixed inset-0 z-50 bg-ink/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+        'fixed inset-0 z-50 bg-[#383838]/80 data-[open]:animate-in data-[open]:fade-in-0',
         className
       )}
       {...props}
@@ -30,39 +38,28 @@ function DialogContent({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content>) {
+}: React.ComponentProps<typeof DialogPrimitive.Popup>) {
   return (
     <DialogPortal>
       <DialogOverlay />
-      <DialogPrimitive.Content
+      <DialogPrimitive.Popup
         className={cn(
-          'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-6 border border-silver bg-paper p-8 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
+          'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-6 border border-[#383838] bg-white p-8 shadow-hard duration-200 data-[open]:animate-in data-[open]:fade-in-0 data-[open]:zoom-in-95 data-[open]:slide-in-from-left-1/2 data-[open]:slide-in-from-top-[48%]',
           className
         )}
         {...props}
       >
         {children}
-      </DialogPrimitive.Content>
+      </DialogPrimitive.Popup>
     </DialogPortal>
   )
 }
 
-function DialogHeader({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
-  return (
-    <div
-      className={cn('flex flex-col space-y-2', className)}
-      {...props}
-    />
-  )
+function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('flex flex-col space-y-2', className)} {...props} />
 }
 
-function DialogFooter({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
+function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
@@ -71,13 +68,10 @@ function DialogFooter({
   )
 }
 
-function DialogTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
-      className={cn('font-serif text-xl italic leading-none', className)}
+      className={cn('font-mono text-xl uppercase leading-none', className)}
       {...props}
     />
   )
@@ -89,7 +83,7 @@ function DialogDescription({
 }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
-      className={cn('text-slate text-sm', className)}
+      className={cn('text-[#757575] text-sm', className)}
       {...props}
     />
   )

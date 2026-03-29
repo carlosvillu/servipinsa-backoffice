@@ -11,10 +11,10 @@ export function Toaster({ ...props }: ToasterProps) {
       toastOptions={{
         classNames: {
           toast:
-            'group toast group-[.toaster]:bg-paper group-[.toaster]:text-ink group-[.toaster]:border group-[.toaster]:border-silver group-[.toaster]:shadow-none',
-          description: 'group-[.toast]:text-slate',
-          actionButton: 'group-[.toast]:bg-ink group-[.toast]:text-paper',
-          cancelButton: 'group-[.toast]:bg-pearl group-[.toast]:text-ink',
+            'group toast group-[.toaster]:bg-white group-[.toaster]:text-[#383838] group-[.toaster]:border group-[.toaster]:border-[#383838] group-[.toaster]:shadow-none',
+          description: 'group-[.toast]:text-[#757575]',
+          actionButton: 'group-[.toast]:bg-[#383838] group-[.toast]:text-[#F4EFEA]',
+          cancelButton: 'group-[.toast]:bg-[#F4EFEA] group-[.toast]:text-[#383838]',
         },
       }}
       {...props}

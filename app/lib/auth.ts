@@ -15,6 +15,16 @@ export const auth = betterAuth({
     usePlural: true,
   }),
 
+  user: {
+    additionalFields: {
+      role: {
+        type: 'string',
+        defaultValue: 'EMPLEADO',
+        input: false,
+      },
+    },
+  },
+
   basePath: '/api/auth',
 
   trustedOrigins: [
@@ -35,14 +45,6 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
-  },
-
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      disableImplicitSignUp: true,
-    },
   },
 
   session: {

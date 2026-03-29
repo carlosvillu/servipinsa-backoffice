@@ -1,13 +1,20 @@
-// Minimal test fixtures for generic SaaS template
+// Minimal test fixtures for Servipinsa backoffice
 export const FIXTURES = {
   users: {
     alice: {
       email: 'alice@example.com',
       name: 'Alice User',
+      role: 'EMPLEADO' as const,
     },
     bob: {
       email: 'bob@example.com',
       name: 'Bob User',
+      role: 'EMPLEADO' as const,
+    },
+    manager: {
+      email: 'manager@example.com',
+      name: 'Manager User',
+      role: 'MANAGER' as const,
     },
   },
   sessions: {
@@ -28,12 +35,51 @@ export const FIXTURES = {
     aliceAccount: {
       accountId: 'alice@example.com',
       providerId: 'credential',
-      password: '$2a$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u', // 'password123'
+      password:
+        '$2a$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u', // 'password123'
     },
     bobAccount: {
       accountId: 'bob@example.com',
       providerId: 'credential',
-      password: '$2a$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u', // 'password123'
+      password:
+        '$2a$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u', // 'password123'
+    },
+    managerAccount: {
+      accountId: 'manager@example.com',
+      providerId: 'credential',
+      password:
+        '$2a$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u', // 'password123'
+    },
+  },
+  workOrders: {
+    sampleOrder: {
+      client: 'Acme Corp',
+      address: 'Calle Principal 1, Madrid',
+      carNumber: 'ABC-123',
+      driverOut: 'Juan',
+      driverReturn: 'Pedro',
+    },
+  },
+  workOrderTasks: {
+    sampleTask: {
+      description: 'Instalación de tubería',
+      startTime: new Date('2026-03-29T08:00:00Z'),
+      endTime: new Date('2026-03-29T12:00:00Z'),
+    },
+  },
+  workOrderLabor: {
+    sampleLabor: {
+      technicianName: 'Carlos Técnico',
+      entryTime: new Date('2026-03-29T08:00:00Z'),
+      exitTime: new Date('2026-03-29T17:00:00Z'),
+    },
+  },
+  workOrderMaterials: {
+    sampleMaterial: {
+      units: 10,
+      description: 'Tubería PVC 110mm',
+      project: 'Proyecto A',
+      supply: 'Proveedor X',
     },
   },
 }

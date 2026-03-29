@@ -35,7 +35,17 @@ Both work seamlessly with Drizzle ORM.
 npm run db:generate              # Generate migrations from schema changes
 npm run db:migrate               # Run migrations (uses .env.development)
 DB_ENV=production npm run db:migrate  # Run migrations against production
+npm run db:seed                  # Create initial MANAGER user (idempotent)
 ```
+
+## Seeding
+
+`npm run db:seed` creates the initial admin user with role MANAGER. It requires two environment variables in `.env.development`:
+
+- `SEED_ADMIN_EMAIL` — Email for the admin user
+- `SEED_ADMIN_PASSWORD` — Password (min 8 characters)
+
+The script is idempotent: running it twice updates the existing user's role to MANAGER without error.
 
 ## Health Check Endpoint
 

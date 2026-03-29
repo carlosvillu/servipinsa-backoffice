@@ -70,6 +70,33 @@ export async function createAuthSession(
 }
 
 /**
+ * Creates a user with a specific role via Better Auth API, then updates role via SQL.
+ * Use this when you need a MANAGER user in tests.
+ *
+ * @warning TEST-ONLY - Do not use outside of E2E tests
+ */
+export async function createAuthSessionWithRole(
+  baseUrl: string,
+  ctx: import('./db').DbContext,
+  options: {
+    email: string
+    password: string
+    name?: string
+    role: string
+  }
+): Promise<AuthResult> {
+  const result = await createAuthSession(baseUrl, options)
+
+  const { executeSQL } = await import('./db')
+  await executeSQL(ctx, `UPDATE users SET role = $1 WHERE id = $2`, [
+    options.role,
+    result.userId,
+  ])
+
+  return result
+}
+
+/**
  * Sets the session cookie in the browser context.
  * The token must be obtained from createAuthSession to be properly signed.
  */
