@@ -30,7 +30,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
   const canEdit = canEditWorkOrder(workOrder, authSession.user.id, role)
   const isManager = role === 'MANAGER'
-  const isValidated = workOrder.validations.length > 0
 
   return {
     workOrder: {
@@ -67,14 +66,13 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     },
     canEdit,
     isManager,
-    isValidated,
   }
 }
 
 export default function WorkOrderDetailPage({
   loaderData,
 }: Route.ComponentProps) {
-  const { workOrder, canEdit, isManager, isValidated } = loaderData
+  const { workOrder, canEdit, isManager } = loaderData
 
   return (
     <main className="w-full max-w-4xl mx-auto px-6 md:px-12 py-8">
@@ -89,7 +87,7 @@ export default function WorkOrderDetailPage({
           {canEdit && (
             <Button render={<Link to="edit" />}>Editar</Button>
           )}
-          {isManager && !isValidated && (
+          {isManager && workOrder.validationCount === 0 && (
             <Button disabled>Validar Parte</Button>
           )}
         </div>

@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { DetailField } from '~/components/DetailField'
+import { DetailTable } from '~/components/DetailTable'
+import { formatDate } from '~/lib/dates'
 
 type WorkOrderDetailData = {
   createdAt: string
@@ -21,14 +23,6 @@ type WorkOrderDetailData = {
     project: string | null
     supply: string | null
   }>
-}
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('es-ES', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  })
 }
 
 export function WorkOrderDetail({ data }: { data: WorkOrderDetailData }) {
@@ -60,36 +54,14 @@ export function WorkOrderDetail({ data }: { data: WorkOrderDetailData }) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-[#E0E0E0]">
-                  <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                    Descripcion
-                  </th>
-                  <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                    Hora inicio
-                  </th>
-                  <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                    Hora fin
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.tasks.map((task, i) => (
-                  <tr key={i} className="border-b border-[#E0E0E0] last:border-0">
-                    <td className="py-2 text-[#383838]">{task.description}</td>
-                    <td className="py-2 font-mono text-[#383838]">
-                      {task.startTime}
-                    </td>
-                    <td className="py-2 font-mono text-[#383838]">
-                      {task.endTime}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <DetailTable
+            columns={[
+              { header: 'Descripcion', render: (t) => t.description },
+              { header: 'Hora inicio', render: (t) => t.startTime, mono: true },
+              { header: 'Hora fin', render: (t) => t.endTime, mono: true },
+            ]}
+            rows={data.tasks}
+          />
         </CardContent>
       </Card>
 
@@ -100,41 +72,14 @@ export function WorkOrderDetail({ data }: { data: WorkOrderDetailData }) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-[#E0E0E0]">
-                  <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                    Tecnico
-                  </th>
-                  <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                    Hora entrada
-                  </th>
-                  <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                    Hora salida
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.labor.map((entry, i) => (
-                  <tr
-                    key={i}
-                    className="border-b border-[#E0E0E0] last:border-0"
-                  >
-                    <td className="py-2 text-[#383838]">
-                      {entry.technicianName}
-                    </td>
-                    <td className="py-2 font-mono text-[#383838]">
-                      {entry.entryTime}
-                    </td>
-                    <td className="py-2 font-mono text-[#383838]">
-                      {entry.exitTime}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <DetailTable
+            columns={[
+              { header: 'Tecnico', render: (e) => e.technicianName },
+              { header: 'Hora entrada', render: (e) => e.entryTime, mono: true },
+              { header: 'Hora salida', render: (e) => e.exitTime, mono: true },
+            ]}
+            rows={data.labor}
+          />
         </CardContent>
       </Card>
 
@@ -148,47 +93,15 @@ export function WorkOrderDetail({ data }: { data: WorkOrderDetailData }) {
           {data.materials.length === 0 ? (
             <p className="text-[#757575] font-mono text-sm">Sin materiales</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="border-b border-[#E0E0E0]">
-                    <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                      Unidades
-                    </th>
-                    <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                      Descripcion
-                    </th>
-                    <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                      Proyecto
-                    </th>
-                    <th className="font-mono text-xs uppercase text-[#757575] tracking-wider pb-2">
-                      Suministro
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.materials.map((material, i) => (
-                    <tr
-                      key={i}
-                      className="border-b border-[#E0E0E0] last:border-0"
-                    >
-                      <td className="py-2 font-mono text-[#383838]">
-                        {material.units}
-                      </td>
-                      <td className="py-2 text-[#383838]">
-                        {material.description}
-                      </td>
-                      <td className="py-2 text-[#383838]">
-                        {material.project || '—'}
-                      </td>
-                      <td className="py-2 text-[#383838]">
-                        {material.supply || '—'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <DetailTable
+              columns={[
+                { header: 'Unidades', render: (m) => m.units, mono: true },
+                { header: 'Descripcion', render: (m) => m.description },
+                { header: 'Proyecto', render: (m) => m.project || '—' },
+                { header: 'Suministro', render: (m) => m.supply || '—' },
+              ]}
+              rows={data.materials}
+            />
           )}
         </CardContent>
       </Card>
