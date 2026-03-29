@@ -46,9 +46,14 @@ export function UserDropdown({ user, onLogout }: UserDropdownProps) {
 
 
         {user.role === 'MANAGER' && (
-          <DropdownMenuItem render={<Link to="/dashboard" />} className="cursor-pointer">
+          <>
+            <DropdownMenuItem render={<Link to="/dashboard" />} className="cursor-pointer">
               Dashboard
-          </DropdownMenuItem>
+            </DropdownMenuItem>
+            <DropdownMenuItem render={<Link to="/users" />} className="cursor-pointer">
+              Usuarios
+            </DropdownMenuItem>
+          </>
         )}
 
         <DropdownMenuItem onClick={onLogout} className="cursor-pointer">
