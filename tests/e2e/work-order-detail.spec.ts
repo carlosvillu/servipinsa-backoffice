@@ -159,6 +159,114 @@ test.describe('Detalle de parte de trabajo', () => {
     ).toBeVisible()
   })
 
+  test('MANAGER valida un parte → Validado → sin botón editar', async ({
+    page,
+    context,
+    baseURL,
+    dbContext,
+  }) => {
+    const empleado = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'emp-validate@test.com',
+      password: 'TestPassword123!',
+      name: 'Empleado Validate',
+      role: 'EMPLEADO',
+    })
+
+    const manager = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'mgr-validate@test.com',
+      password: 'TestPassword123!',
+      name: 'Manager Validate',
+      role: 'MANAGER',
+    })
+
+    const orderId = await seedWorkOrder(
+      dbContext,
+      'sampleOrder',
+      { createdBy: empleado.userId },
+      { client: 'Cliente Validacion' }
+    )
+
+    await seedWorkOrderTask(dbContext, 'sampleTask', { workOrderId: orderId })
+    await seedWorkOrderLabor(dbContext, 'sampleLabor', { workOrderId: orderId })
+
+    await setAuthCookie(context, manager.token)
+    await page.goto(`/work-orders/${orderId}`)
+
+    // Verify initial state
+    await expect(
+      page.locator('span', { hasText: /^Pendiente$/ })
+    ).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: /editar/i })
+    ).toBeVisible()
+
+    // Click validate button
+    await page.getByRole('button', { name: /validar parte/i }).click()
+
+    // Confirm dialog appears
+    await expect(
+      page.getByText(/bloqueará el parte para edición/i)
+    ).toBeVisible()
+
+    // Confirm validation
+    await page.getByRole('button', { name: /confirmar validación/i }).click()
+
+    // Wait for revalidation
+    await expect(
+      page.locator('span', { hasText: /^Validado$/ })
+    ).toBeVisible()
+
+    // Edit button should be gone
+    await expect(
+      page.getByRole('link', { name: /editar/i })
+    ).not.toBeVisible()
+
+    // Validate button should be gone (this manager already validated)
+    await expect(
+      page.getByRole('button', { name: /validar parte/i })
+    ).not.toBeVisible()
+
+    // Validation appears in history
+    await expect(page.getByText('Manager Validate')).toBeVisible()
+  })
+
+  test('EMPLEADO no ve botón Validar Parte', async ({
+    page,
+    context,
+    baseURL,
+    dbContext,
+  }) => {
+    const empleado = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'emp-noval@test.com',
+      password: 'TestPassword123!',
+      name: 'Empleado NoVal',
+      role: 'EMPLEADO',
+    })
+
+    const orderId = await seedWorkOrder(
+      dbContext,
+      'sampleOrder',
+      { createdBy: empleado.userId },
+      { client: 'Cliente Sin Validar' }
+    )
+
+    await seedWorkOrderTask(dbContext, 'sampleTask', { workOrderId: orderId })
+    await seedWorkOrderLabor(dbContext, 'sampleLabor', { workOrderId: orderId })
+
+    await setAuthCookie(context, empleado.token)
+    await page.goto(`/work-orders/${orderId}`)
+
+    // Validate button should not be visible
+    await expect(
+      page.getByRole('button', { name: /validar parte/i })
+    ).not.toBeVisible()
+
+    // Edit button should be visible (own order, not validated)
+    await expect(
+      page.getByRole('link', { name: /editar/i })
+    ).toBeVisible()
+  })
+
   test('EMPLEADO no puede ver parte de otro usuario', async ({
     page,
     context,

@@ -1,4 +1,4 @@
-import { eq, desc, count, sql } from 'drizzle-orm'
+import { eq, desc, count, sql, and } from 'drizzle-orm'
 import { db } from '~/db'
 import {
   workOrders,
@@ -194,6 +194,51 @@ export function canEditWorkOrder(
   if (role === 'MANAGER') return true
   if (role === 'EMPLEADO' && workOrder.createdBy === userId) return true
   return false
+}
+
+export async function validateWorkOrder(
+  workOrderId: string,
+  managerId: string
+): Promise<string> {
+  const existing = await db
+    .select({ id: workOrderValidations.id })
+    .from(workOrderValidations)
+    .where(
+      and(
+        eq(workOrderValidations.workOrderId, workOrderId),
+        eq(workOrderValidations.validatedBy, managerId)
+      )
+    )
+    .limit(1)
+
+  if (existing.length > 0) {
+    throw new Response('Ya has validado este parte', { status: 409 })
+  }
+
+  const [inserted] = await db
+    .insert(workOrderValidations)
+    .values({ workOrderId, validatedBy: managerId })
+    .returning({ id: workOrderValidations.id })
+
+  return inserted.id
+}
+
+export async function hasManagerValidated(
+  workOrderId: string,
+  managerId: string
+): Promise<boolean> {
+  const result = await db
+    .select({ id: workOrderValidations.id })
+    .from(workOrderValidations)
+    .where(
+      and(
+        eq(workOrderValidations.workOrderId, workOrderId),
+        eq(workOrderValidations.validatedBy, managerId)
+      )
+    )
+    .limit(1)
+
+  return result.length > 0
 }
 
 export async function updateWorkOrder(
