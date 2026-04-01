@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { ClipboardList } from 'lucide-react'
-import { StatusBadge } from '~/components/StatusBadge'
-import { formatDate } from '~/lib/dates'
+import { WorkOrderListRow } from '~/components/WorkOrderListRow'
+import { WorkOrderListCard } from '~/components/WorkOrderListCard'
 
 export type WorkOrderListItemData = {
   id: string
@@ -49,29 +49,12 @@ export function WorkOrderList({
               <th className={`${thClass} text-left`}>Dirección</th>
               <th className={`${thClass} text-center`}>Validaciones</th>
               <th className={`${thClass} text-center`}>Estado</th>
+              <th className={`${thClass} text-center w-12`} />
             </tr>
           </thead>
           <tbody>
             {items.map((item) => (
-              <tr key={item.id} className="border-t border-[#E0E0E0] bg-white hover:bg-[#E0E0E0] transition-colors">
-                <td className="px-4 py-3 font-sans text-sm text-[#383838]">
-                  <Link to={`/work-orders/${item.id}`}>{formatDate(item.createdAt)}</Link>
-                </td>
-                <td className="px-4 py-3 font-mono uppercase text-sm text-[#383838]">
-                  <Link to={`/work-orders/${item.id}`}>{item.client}</Link>
-                </td>
-                <td className="px-4 py-3 font-sans text-sm text-[#757575]">
-                  <Link to={`/work-orders/${item.id}`}>{item.address}</Link>
-                </td>
-                <td className="px-4 py-3 font-mono text-sm text-[#383838] text-center">
-                  <Link to={`/work-orders/${item.id}`}>{item.validationCount}</Link>
-                </td>
-                <td className="px-4 py-3 text-center">
-                  <Link to={`/work-orders/${item.id}`}>
-                    <StatusBadge validationCount={item.validationCount} />
-                  </Link>
-                </td>
-              </tr>
+              <WorkOrderListRow key={item.id} item={item} />
             ))}
           </tbody>
         </table>
@@ -79,24 +62,7 @@ export function WorkOrderList({
 
       <div className="md:hidden space-y-3">
         {items.map((item) => (
-          <Link
-            key={item.id}
-            to={`/work-orders/${item.id}`}
-            className="block border border-[#383838] bg-white p-4 hover:bg-[#E0E0E0] transition-colors"
-          >
-            <p className="font-mono uppercase text-sm text-[#383838]">
-              {item.client}
-            </p>
-            <p className="font-sans text-sm text-[#757575] mt-1">
-              {item.address}
-            </p>
-            <div className="flex items-center justify-between mt-3">
-              <span className="font-sans text-xs text-[#757575]">
-                {formatDate(item.createdAt)}
-              </span>
-              <StatusBadge validationCount={item.validationCount} />
-            </div>
-          </Link>
+          <WorkOrderListCard key={item.id} item={item} />
         ))}
       </div>
     </>
