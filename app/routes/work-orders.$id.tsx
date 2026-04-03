@@ -20,6 +20,7 @@ import { Button } from '~/components/ui/button'
 import { useToastFromSearchParams } from '~/hooks/useToastFromSearchParams'
 import { useExportWorkOrder } from '~/hooks/useExportWorkOrder'
 
+
 export function meta({ data }: Route.MetaArgs) {
   const client = data?.workOrder?.client ?? 'Parte'
   return [{ title: `${client} — Servipinsa` }]

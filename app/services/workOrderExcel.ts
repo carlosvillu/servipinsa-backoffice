@@ -55,7 +55,6 @@ export async function generateWorkOrderExcel(
   const ExcelJS = await import('exceljs')
   const workbook = new ExcelJS.Workbook()
 
-  // Sheet 1: Datos Generales
   const general = workbook.addWorksheet('Datos Generales')
   general.columns = [
     { header: 'Campo', key: 'campo', width: 22 },
@@ -72,7 +71,6 @@ export async function generateWorkOrderExcel(
   ])
   styleHeaderRow(general, 2)
 
-  // Sheet 2: Trabajos Realizados
   const tasks = workbook.addWorksheet('Trabajos Realizados')
   tasks.columns = [
     { header: 'Descripcion', key: 'description', width: 40 },
@@ -82,7 +80,6 @@ export async function generateWorkOrderExcel(
   data.tasks.forEach((t) => tasks.addRow(t))
   styleHeaderRow(tasks, 3)
 
-  // Sheet 3: Mano de Obra
   const labor = workbook.addWorksheet('Mano de Obra')
   labor.columns = [
     { header: 'Tecnico', key: 'technicianName', width: 30 },
@@ -92,7 +89,6 @@ export async function generateWorkOrderExcel(
   data.labor.forEach((l) => labor.addRow(l))
   styleHeaderRow(labor, 3)
 
-  // Sheet 4: Materiales
   const materials = workbook.addWorksheet('Materiales')
   materials.columns = [
     { header: 'Unidades', key: 'units', width: 12 },
@@ -115,20 +111,9 @@ export async function generateWorkOrderExcel(
   })
 }
 
-export function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
-
 export function buildExcelFilename(client: string, createdAt: string): string {
   const sanitized = client
-    .replace(/[^a-zA-Z0-9\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00c1\u00c9\u00cd\u00d3\u00da\u00d1\s-]/g, '')
+    .replace(/[/\\:*?"<>|]/g, '')
     .replace(/\s+/g, '-')
     .toLowerCase()
   const date = formatDate(createdAt).replace(/\//g, '-')

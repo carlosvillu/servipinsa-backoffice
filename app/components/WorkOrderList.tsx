@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { ClipboardList } from 'lucide-react'
 import { WorkOrderListRow } from '~/components/WorkOrderListRow'
 import { WorkOrderListCard } from '~/components/WorkOrderListCard'
+import { useExportWorkOrderById } from '~/hooks/useExportWorkOrder'
 
 export type WorkOrderListItemData = {
   id: string
@@ -18,6 +19,8 @@ export function WorkOrderList({
 }: {
   items: WorkOrderListItemData[]
 }) {
+  const { exportById, isExporting, exportingId } = useExportWorkOrderById()
+
   if (items.length === 0) {
     return (
       <div className="border border-[#383838] bg-white p-12 text-center flex flex-col items-center gap-4">
@@ -54,7 +57,12 @@ export function WorkOrderList({
           </thead>
           <tbody>
             {items.map((item) => (
-              <WorkOrderListRow key={item.id} item={item} />
+              <WorkOrderListRow
+                key={item.id}
+                item={item}
+                onExport={exportById}
+                isExporting={isExporting && exportingId === item.id}
+              />
             ))}
           </tbody>
         </table>
@@ -62,7 +70,12 @@ export function WorkOrderList({
 
       <div className="md:hidden space-y-3">
         {items.map((item) => (
-          <WorkOrderListCard key={item.id} item={item} />
+          <WorkOrderListCard
+            key={item.id}
+            item={item}
+            onExport={exportById}
+            isExporting={isExporting && exportingId === item.id}
+          />
         ))}
       </div>
     </>

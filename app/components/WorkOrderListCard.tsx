@@ -2,13 +2,18 @@ import { Link } from 'react-router'
 import { Download } from 'lucide-react'
 import { StatusBadge } from '~/components/StatusBadge'
 import { Button } from '~/components/ui/button'
-import { useExportWorkOrderById } from '~/hooks/useExportWorkOrder'
 import { formatDate } from '~/lib/dates'
 import type { WorkOrderListItemData } from '~/components/WorkOrderList'
 
-export function WorkOrderListCard({ item }: { item: WorkOrderListItemData }) {
-  const { exportById, isExporting } = useExportWorkOrderById(item.id)
-
+export function WorkOrderListCard({
+  item,
+  onExport,
+  isExporting,
+}: {
+  item: WorkOrderListItemData
+  onExport: (id: string) => void
+  isExporting: boolean
+}) {
   return (
     <div className="relative border border-[#383838] bg-white hover:bg-[#E0E0E0] transition-colors">
       <Link
@@ -34,7 +39,7 @@ export function WorkOrderListCard({ item }: { item: WorkOrderListItemData }) {
           size="icon-sm"
           onClick={(e) => {
             e.stopPropagation()
-            exportById()
+            onExport(item.id)
           }}
           disabled={isExporting}
           aria-label="Exportar a Excel"
