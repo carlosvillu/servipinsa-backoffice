@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { data, Link, useFetcher } from 'react-router'
 import { toast } from 'sonner'
+import { Download } from 'lucide-react'
 import type { Route } from './+types/work-orders.$id'
 import { requireAuth } from '~/lib/auth.server'
 import { requireManager } from '~/lib/authorization.server'
@@ -17,6 +18,8 @@ import { WorkOrderValidations } from '~/components/WorkOrderValidations'
 import { ValidateWorkOrderDialog } from '~/components/ValidateWorkOrderDialog'
 import { Button } from '~/components/ui/button'
 import { useToastFromSearchParams } from '~/hooks/useToastFromSearchParams'
+import { useExportWorkOrder } from '~/hooks/useExportWorkOrder'
+
 
 export function meta({ data }: Route.MetaArgs) {
   const client = data?.workOrder?.client ?? 'Parte'
@@ -103,6 +106,7 @@ export default function WorkOrderDetailPage({
   }, [validateFetcher.data, validateFetcher.state])
 
   const { workOrder, canEdit, canValidate } = loaderData
+  const { exportWorkOrder, isExporting } = useExportWorkOrder()
 
   return (
     <main className="w-full max-w-4xl mx-auto px-6 md:px-12 py-8">
@@ -114,6 +118,14 @@ export default function WorkOrderDetailPage({
           <StatusBadge validationCount={workOrder.validationCount} />
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => exportWorkOrder(workOrder)}
+            disabled={isExporting}
+          >
+            <Download size={16} />
+            Exportar
+          </Button>
           {canEdit && (
             <Button render={<Link to="edit" />}>Editar</Button>
           )}
