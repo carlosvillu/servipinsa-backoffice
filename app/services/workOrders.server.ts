@@ -9,6 +9,7 @@ import {
 } from '~/db/schema/work-orders'
 import type { UserRole } from '~/db/schema/users'
 import type { WorkOrderFormData } from '~/schemas/workOrder'
+import { parseYMDToLocalDate } from '~/lib/dates'
 
 export type WorkOrderFull = NonNullable<
   Awaited<ReturnType<typeof getWorkOrderById>>
@@ -150,6 +151,7 @@ export async function createWorkOrder(
         driverOut: data.driverOut || null,
         driverReturn: data.driverReturn || null,
         createdBy,
+        createdAt: parseYMDToLocalDate(data.createdAt),
       })
       .returning({ id: workOrders.id })
 

@@ -10,6 +10,7 @@ import {
 } from '~/services/workOrders.server'
 import { workOrderFormSchema } from '~/schemas/workOrder'
 import { WorkOrderForm } from '~/components/WorkOrderForm'
+import { formatDateYMD } from '~/lib/dates'
 
 export function meta() {
   return [{ title: 'Editar Parte — Servipinsa' }]
@@ -28,6 +29,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
   return {
     defaultValues: {
+      createdAt: formatDateYMD(workOrder.createdAt),
       client: workOrder.client,
       address: workOrder.address,
       carNumber: workOrder.carNumber || '',

@@ -11,6 +11,7 @@ import {
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { todayYYYYMMDD } from '~/lib/dates'
 import { WorkOrderTasksSection } from '~/components/WorkOrderTasksSection'
 import { WorkOrderLaborSection } from '~/components/WorkOrderLaborSection'
 import { WorkOrderMaterialsSection } from '~/components/WorkOrderMaterialsSection'
@@ -43,6 +44,19 @@ export function WorkOrderForm({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="createdAt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fecha del parte</FormLabel>
+                  <FormControl>
+                    <Input type="date" max={todayYYYYMMDD()} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="client"
