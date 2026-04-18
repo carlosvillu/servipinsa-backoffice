@@ -15,6 +15,7 @@ import {
 } from '~/components/ui/form'
 import { Input, inputClassName } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { cn } from '~/lib/utils'
 
 type Props = {
   fieldsArray: UseFieldArrayReturn<WorkOrderFormData, 'tasks'>
@@ -68,7 +69,7 @@ export function WorkOrderTasksSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Tipo de trabajo</FormLabel>
                   <FormControl>
-                    <select className={`${inputClassName} py-0`} {...field}>
+                    <select className={cn(inputClassName, 'h-auto py-2 leading-normal')} {...field}>
                       {WORK_TYPE_VALUES.map((value) => (
                         <option key={value} value={value}>
                           {WORK_TYPE_LABELS[value]}
