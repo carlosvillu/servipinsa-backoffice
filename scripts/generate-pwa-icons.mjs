@@ -8,43 +8,39 @@ const ROOT = resolve(__dirname, '..')
 const SRC_SVG = resolve(ROOT, 'public/favicon.svg')
 const OUT_DIR = resolve(ROOT, 'public/icons')
 const BACKGROUND = '#F4EFEA'
+const TRANSPARENT = { r: 0, g: 0, b: 0, alpha: 0 }
 
 const TARGETS = [
-  { size: 192, name: 'icon-192', padding: 0, background: { r: 0, g: 0, b: 0, alpha: 0 } },
-  { size: 512, name: 'icon-512', padding: 0, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+  { size: 192, name: 'icon-192', padding: 0, background: TRANSPARENT },
+  { size: 512, name: 'icon-512', padding: 0, background: TRANSPARENT },
   { size: 512, name: 'icon-maskable-512', padding: 0.2, background: BACKGROUND },
-  { size: 180, name: 'apple-touch-icon-180', padding: 0, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+  { size: 180, name: 'apple-touch-icon-180', padding: 0, background: TRANSPARENT },
 ]
+
+async function renderTarget(svg, { size, name, padding, background }) {
+  const inner = Math.round(size * (1 - padding * 2))
+  const offset = Math.round((size - inner) / 2)
+
+  const rendered = await sharp(svg, { density: 384 })
+    .resize(inner, inner, { fit: 'contain', background: TRANSPARENT })
+    .png()
+    .toBuffer()
+
+  const out = await sharp({
+    create: { width: size, height: size, channels: 4, background },
+  })
+    .composite([{ input: rendered, top: offset, left: offset }])
+    .png()
+    .toBuffer()
+
+  await writeFile(resolve(OUT_DIR, `${name}.png`), out)
+  console.log(`✓ ${name}.png (${size}x${size})`)
+}
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true })
   const svg = await readFile(SRC_SVG)
-
-  for (const { size, name, padding, background } of TARGETS) {
-    const inner = Math.round(size * (1 - padding * 2))
-    const offset = Math.round((size - inner) / 2)
-
-    const rendered = await sharp(svg, { density: 384 })
-      .resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-      .png()
-      .toBuffer()
-
-    const out = await sharp({
-      create: {
-        width: size,
-        height: size,
-        channels: 4,
-        background,
-      },
-    })
-      .composite([{ input: rendered, top: offset, left: offset }])
-      .png()
-      .toBuffer()
-
-    const outPath = resolve(OUT_DIR, `${name}.png`)
-    await writeFile(outPath, out)
-    console.log(`✓ ${name}.png (${size}x${size})`)
-  }
+  await Promise.all(TARGETS.map((target) => renderTarget(svg, target)))
 }
 
 main().catch((err) => {

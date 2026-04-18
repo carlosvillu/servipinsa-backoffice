@@ -1,5 +1,36 @@
+import type { BrowserContext } from '@playwright/test'
 import { test, expect } from '../fixtures/app.fixture'
 import { createAuthSession, setAuthCookie } from '../helpers/auth'
+
+async function loginAs(
+  context: BrowserContext,
+  baseURL: string | undefined,
+  prefix: string,
+): Promise<void> {
+  const { token } = await createAuthSession(baseURL!, {
+    email: `${prefix}-${Date.now()}@example.com`,
+    password: 'TestPassword123!',
+  })
+  await setAuthCookie(context, token)
+}
+
+async function dispatchBeforeInstallPrompt(page: import('@playwright/test').Page): Promise<void> {
+  await page.evaluate(() => {
+    const w = window as unknown as { __pwaPromptCalled?: boolean }
+    w.__pwaPromptCalled = false
+    const event = new Event('beforeinstallprompt') as Event & {
+      prompt: () => Promise<void>
+      userChoice: Promise<{ outcome: string; platform: string }>
+      platforms: string[]
+    }
+    event.platforms = ['web']
+    event.prompt = async () => {
+      w.__pwaPromptCalled = true
+    }
+    event.userChoice = Promise.resolve({ outcome: 'accepted', platform: 'web' })
+    window.dispatchEvent(event)
+  })
+}
 
 test.describe('PWA', () => {
   test('manifest.webmanifest se sirve y es válido', async ({ request, baseURL }) => {
@@ -30,21 +61,17 @@ test.describe('PWA', () => {
       '/icons/apple-touch-icon-180.png',
     ]
 
-    for (const path of icons) {
-      const res = await request.get(`${baseURL}${path}`)
-      expect(res.status(), path).toBe(200)
-      expect(res.headers()['content-type']).toContain('image/png')
-    }
+    await Promise.all(
+      icons.map(async (path) => {
+        const res = await request.get(`${baseURL}${path}`)
+        expect(res.status(), path).toBe(200)
+        expect(res.headers()['content-type']).toContain('image/png')
+      }),
+    )
   })
 
   test('meta tags PWA presentes en root', async ({ page, context, baseURL }) => {
-    const timestamp = Date.now()
-    const { token } = await createAuthSession(baseURL!, {
-      email: `test-pwa-${timestamp}@example.com`,
-      password: 'TestPassword123!',
-    })
-    await setAuthCookie(context, token)
-
+    await loginAs(context, baseURL, 'test-pwa')
     await page.goto('/')
 
     await expect(page.locator('link[rel="manifest"][href="/manifest.webmanifest"]')).toHaveCount(1)
@@ -61,13 +88,7 @@ test.describe('PWA', () => {
     context,
     baseURL,
   }) => {
-    const timestamp = Date.now()
-    const { token } = await createAuthSession(baseURL!, {
-      email: `test-pwa-noevent-${timestamp}@example.com`,
-      password: 'TestPassword123!',
-    })
-    await setAuthCookie(context, token)
-
+    await loginAs(context, baseURL, 'test-pwa-noevent')
     await page.goto('/')
     await expect(page.getByRole('button', { name: 'Instalar app' })).toHaveCount(0)
   })
@@ -77,33 +98,12 @@ test.describe('PWA', () => {
     context,
     baseURL,
   }) => {
-    const timestamp = Date.now()
-    const { token } = await createAuthSession(baseURL!, {
-      email: `test-pwa-event-${timestamp}@example.com`,
-      password: 'TestPassword123!',
-    })
-    await setAuthCookie(context, token)
-
+    await loginAs(context, baseURL, 'test-pwa-event')
     await page.goto('/')
-    // Esperar a que el header esté hidratado y el listener beforeinstallprompt registrado
     await expect(page.getByRole('link', { name: /Servipinsa/i })).toBeVisible()
     await page.waitForFunction(() => document.readyState === 'complete')
 
-    await page.evaluate(() => {
-      const w = window as unknown as { __pwaPromptCalled?: boolean }
-      w.__pwaPromptCalled = false
-      const event = new Event('beforeinstallprompt') as Event & {
-        prompt: () => Promise<void>
-        userChoice: Promise<{ outcome: string; platform: string }>
-        platforms: string[]
-      }
-      event.platforms = ['web']
-      event.prompt = async () => {
-        w.__pwaPromptCalled = true
-      }
-      event.userChoice = Promise.resolve({ outcome: 'accepted', platform: 'web' })
-      window.dispatchEvent(event)
-    })
+    await dispatchBeforeInstallPrompt(page)
 
     const installBtn = page.getByRole('button', { name: 'Instalar app' })
     await expect(installBtn).toBeVisible()
@@ -120,7 +120,6 @@ test.describe('PWA', () => {
     context,
     baseURL,
   }) => {
-    // Emular media feature display-mode: standalone (app lanzada desde home screen)
     await context.addInitScript(() => {
       const originalMatchMedia = window.matchMedia.bind(window)
       window.matchMedia = (query: string) => {
@@ -140,32 +139,13 @@ test.describe('PWA', () => {
       }
     })
 
-    const timestamp = Date.now()
-    const { token } = await createAuthSession(baseURL!, {
-      email: `test-pwa-standalone-${timestamp}@example.com`,
-      password: 'TestPassword123!',
-    })
-    await setAuthCookie(context, token)
-
+    await loginAs(context, baseURL, 'test-pwa-standalone')
     await page.goto('/')
     await expect(page.getByRole('link', { name: /Servipinsa/i })).toBeVisible()
     await page.waitForFunction(() => document.readyState === 'complete')
 
-    // Aunque dispare beforeinstallprompt, el botón NO debe aparecer
-    await page.evaluate(() => {
-      const event = new Event('beforeinstallprompt') as Event & {
-        prompt: () => Promise<void>
-        userChoice: Promise<{ outcome: string; platform: string }>
-        platforms: string[]
-      }
-      event.platforms = ['web']
-      event.prompt = async () => {}
-      event.userChoice = Promise.resolve({ outcome: 'accepted', platform: 'web' })
-      window.dispatchEvent(event)
-    })
+    await dispatchBeforeInstallPrompt(page)
 
-    // Dar margen al render por si reacciona al evento
-    await page.waitForTimeout(500)
     await expect(page.getByRole('button', { name: 'Instalar app' })).toHaveCount(0)
   })
 })

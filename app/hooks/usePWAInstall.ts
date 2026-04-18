@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-type BeforeInstallPromptEvent = Event & {
+export type BeforeInstallPromptEvent = Event & {
   readonly platforms: string[]
   readonly userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>
   prompt: () => Promise<void>
@@ -11,14 +11,12 @@ function isStandalone(): boolean {
   if (window.matchMedia('(display-mode: standalone)').matches) return true
   if (window.matchMedia('(display-mode: fullscreen)').matches) return true
   if (window.matchMedia('(display-mode: minimal-ui)').matches) return true
-  // iOS Safari standalone flag
   const nav = window.navigator as Navigator & { standalone?: boolean }
   return nav.standalone === true
 }
 
 export function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
-  const [installed, setInstalled] = useState(false)
   const [standalone, setStandalone] = useState<boolean>(() => isStandalone())
 
   useEffect(() => {
@@ -27,7 +25,6 @@ export function usePWAInstall() {
       setDeferredPrompt(e as BeforeInstallPromptEvent)
     }
     const onAppInstalled = () => {
-      setInstalled(true)
       setDeferredPrompt(null)
     }
     const standaloneMql = window.matchMedia('(display-mode: standalone)')
@@ -54,7 +51,7 @@ export function usePWAInstall() {
   }, [deferredPrompt])
 
   return {
-    canInstall: deferredPrompt !== null && !installed && !standalone,
+    canInstall: deferredPrompt !== null && !standalone,
     install,
   }
 }
