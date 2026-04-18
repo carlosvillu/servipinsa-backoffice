@@ -31,7 +31,7 @@ export type WorkOrderLaborRow = {
   exitTime: string
 }
 
-export type ListAllWorkOrderLaborRowsParams = {
+type ListAllWorkOrderLaborRowsParams = {
   userId: string
   role: UserRole
 }

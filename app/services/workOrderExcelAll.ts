@@ -1,5 +1,5 @@
 import { formatDate, formatDateYMD } from '~/lib/dates'
-import { styleHeaderRow } from '~/services/workOrderExcel'
+import { styleHeaderRow, XLSX_MIME_TYPE } from '~/services/workOrderExcel'
 import type { WorkOrderLaborRow } from '~/services/workOrders.server'
 
 export async function generateWorkOrdersLaborExcel(
@@ -28,9 +28,7 @@ export async function generateWorkOrdersLaborExcel(
   styleHeaderRow(sheet, 4)
 
   const buffer = await workbook.xlsx.writeBuffer()
-  return new Blob([buffer], {
-    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  })
+  return new Blob([buffer], { type: XLSX_MIME_TYPE })
 }
 
 export function buildWorkOrdersLaborExcelFilename(): string {

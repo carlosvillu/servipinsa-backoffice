@@ -64,7 +64,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       </p>
 
       <WorkOrderList items={workOrders} />
-      {workOrders.length > 0 && <ExportAllWorkOrdersButton />}
+      {workOrders.length > 0 && (
+        <div className="mt-6 flex justify-end">
+          <ExportAllWorkOrdersButton />
+        </div>
+      )}
       <Pagination
         currentPage={pagination.page}
         totalPages={pagination.totalPages}
