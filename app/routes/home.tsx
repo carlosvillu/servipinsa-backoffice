@@ -4,6 +4,7 @@ import { requireAuth } from '~/lib/auth.server'
 import { listWorkOrders } from '~/services/workOrders.server'
 import type { UserRole } from '~/db/schema/users'
 import { WorkOrderList } from '~/components/WorkOrderList'
+import { ExportAllWorkOrdersButton } from '~/components/ExportAllWorkOrdersButton'
 import { Pagination } from '~/components/Pagination'
 import { Button } from '~/components/ui/button'
 import { useToastFromSearchParams } from '~/hooks/useToastFromSearchParams'
@@ -63,6 +64,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       </p>
 
       <WorkOrderList items={workOrders} />
+      {workOrders.length > 0 && (
+        <div className="mt-6 flex justify-end">
+          <ExportAllWorkOrdersButton />
+        </div>
+      )}
       <Pagination
         currentPage={pagination.page}
         totalPages={pagination.totalPages}

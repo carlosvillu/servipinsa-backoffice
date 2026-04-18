@@ -7,6 +7,9 @@ import {
 
 export type { WorkOrderExportData }
 
+export const XLSX_MIME_TYPE =
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
 const HEADER_FILL = {
   type: 'pattern' as const,
   pattern: 'solid' as const,
@@ -20,7 +23,7 @@ const HEADER_FONT = {
   size: 11,
 }
 
-function styleHeaderRow(
+export function styleHeaderRow(
   sheet: import('exceljs').Worksheet,
   colCount: number,
 ) {
@@ -101,9 +104,7 @@ export async function generateWorkOrderExcel(
   styleHeaderRow(materials, 4)
 
   const buffer = await workbook.xlsx.writeBuffer()
-  return new Blob([buffer], {
-    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  })
+  return new Blob([buffer], { type: XLSX_MIME_TYPE })
 }
 
 export function buildExcelFilename(client: string, createdAt: string): string {
