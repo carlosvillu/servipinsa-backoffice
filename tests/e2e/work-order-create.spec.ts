@@ -4,6 +4,7 @@ import {
   setAuthCookie,
 } from '../helpers/auth'
 import { resetDatabase } from '../helpers/db'
+import { toYMD, toDisplay, daysFromToday } from '../helpers/dates'
 
 test.describe('Creacion de partes de trabajo', () => {
   test.beforeEach(async ({ dbContext }) => {
@@ -243,13 +244,9 @@ test.describe('Creacion de partes de trabajo', () => {
     await setAuthCookie(context, user.token)
     await page.goto('/work-orders/new')
 
-    const today = new Date()
-    const yyyy = today.getFullYear()
-    const mm = String(today.getMonth() + 1).padStart(2, '0')
-    const dd = String(today.getDate()).padStart(2, '0')
-    const expected = `${yyyy}-${mm}-${dd}`
-
-    await expect(page.locator('input[name="createdAt"]')).toHaveValue(expected)
+    await expect(page.locator('input[name="createdAt"]')).toHaveValue(
+      toYMD(new Date())
+    )
   })
 
   test('se puede crear un parte con una fecha pasada', async ({
@@ -268,15 +265,10 @@ test.describe('Creacion de partes de trabajo', () => {
     await setAuthCookie(context, user.token)
     await page.goto('/work-orders/new')
 
-    const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1)
-    const yyyy = yesterday.getFullYear()
-    const mm = String(yesterday.getMonth() + 1).padStart(2, '0')
-    const dd = String(yesterday.getDate()).padStart(2, '0')
-    const yesterdayYMD = `${yyyy}-${mm}-${dd}`
-    const yesterdayDisplay = `${dd}/${mm}/${yyyy}`
+    const yesterday = daysFromToday(-1)
+    const yesterdayDisplay = toDisplay(yesterday)
 
-    await page.locator('input[name="createdAt"]').fill(yesterdayYMD)
+    await page.locator('input[name="createdAt"]').fill(toYMD(yesterday))
     await page.getByLabel(/cliente/i).fill('Cliente Pasado')
     await page.getByLabel(/direccion/i).fill('Direccion Pasado')
     await page.getByLabel(/descripcion/i).first().fill('Trabajo pasado')
@@ -311,14 +303,7 @@ test.describe('Creacion de partes de trabajo', () => {
     await setAuthCookie(context, user.token)
     await page.goto('/work-orders/new')
 
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    const yyyy = tomorrow.getFullYear()
-    const mm = String(tomorrow.getMonth() + 1).padStart(2, '0')
-    const dd = String(tomorrow.getDate()).padStart(2, '0')
-    const tomorrowYMD = `${yyyy}-${mm}-${dd}`
-
-    await page.locator('input[name="createdAt"]').fill(tomorrowYMD)
+    await page.locator('input[name="createdAt"]').fill(toYMD(daysFromToday(1)))
     await page.getByLabel(/cliente/i).fill('Cliente Futuro')
     await page.getByLabel(/direccion/i).fill('Direccion Futura')
     await page.getByLabel(/descripcion/i).first().fill('Trabajo futuro')
