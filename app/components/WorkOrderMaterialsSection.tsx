@@ -63,9 +63,9 @@ export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
           </p>
         )}
         {fieldsArray.fields.map((field, index) => {
-          const rowProject = materials?.[index]?.project ?? ''
-          const isPuntoRecarga =
-            rowProject !== '' && puntoRecargaProjects.has(rowProject)
+          const isPuntoRecarga = puntoRecargaProjects.has(
+            materials?.[index]?.project ?? '',
+          )
           return (
             <div
               key={field.id}

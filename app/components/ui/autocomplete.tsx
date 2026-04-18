@@ -29,7 +29,7 @@ export function Autocomplete({
 }: AutocompleteProps) {
   return (
     <BaseAutocomplete.Root
-      items={options as readonly string[]}
+      items={options}
       value={value}
       onValueChange={(next) => onChange(next)}
       openOnInputClick
