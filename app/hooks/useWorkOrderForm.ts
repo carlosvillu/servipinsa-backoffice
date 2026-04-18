@@ -5,20 +5,24 @@ import {
   workOrderFormSchema,
   type WorkOrderFormData,
 } from '~/schemas/workOrder'
+import { todayYYYYMMDD } from '~/lib/dates'
 
 type UseWorkOrderFormOptions = {
   defaultValues?: Partial<WorkOrderFormData>
 }
 
-const emptyDefaults: WorkOrderFormData = {
-  client: '',
-  address: '',
-  carNumber: '',
-  driverOut: '',
-  driverReturn: '',
-  tasks: [{ description: '', startTime: '', endTime: '' }],
-  labor: [{ technicianName: '', entryTime: '', exitTime: '' }],
-  materials: [],
+function buildEmptyDefaults(): WorkOrderFormData {
+  return {
+    createdAt: todayYYYYMMDD(),
+    client: '',
+    address: '',
+    carNumber: '',
+    driverOut: '',
+    driverReturn: '',
+    tasks: [{ description: '', startTime: '', endTime: '' }],
+    labor: [{ technicianName: '', entryTime: '', exitTime: '' }],
+    materials: [],
+  }
 }
 
 export function useWorkOrderForm(options?: UseWorkOrderFormOptions) {
@@ -27,7 +31,7 @@ export function useWorkOrderForm(options?: UseWorkOrderFormOptions) {
 
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema) as never,
-    defaultValues: { ...emptyDefaults, ...options?.defaultValues },
+    defaultValues: { ...buildEmptyDefaults(), ...options?.defaultValues },
   })
 
   const tasksFieldArray = useFieldArray({

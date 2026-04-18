@@ -4,6 +4,7 @@ import {
   setAuthCookie,
 } from '../helpers/auth'
 import { resetDatabase } from '../helpers/db'
+import { toYMD, toDisplay, daysFromToday } from '../helpers/dates'
 
 test.describe('Creacion de partes de trabajo', () => {
   test.beforeEach(async ({ dbContext }) => {
@@ -225,5 +226,96 @@ test.describe('Creacion de partes de trabajo', () => {
   test('usuario no autenticado es redirigido al login', async ({ page }) => {
     await page.goto('/work-orders/new')
     await expect(page).toHaveURL(/auth\/login/, { timeout: 10000 })
+  })
+
+  test('la fecha del parte se preselecciona a hoy', async ({
+    page,
+    context,
+    baseURL,
+    dbContext,
+  }) => {
+    const user = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'fecha-hoy@test.com',
+      password: 'TestPassword123!',
+      name: 'Fecha Hoy',
+      role: 'EMPLEADO',
+    })
+
+    await setAuthCookie(context, user.token)
+    await page.goto('/work-orders/new')
+
+    await expect(page.locator('input[name="createdAt"]')).toHaveValue(
+      toYMD(new Date())
+    )
+  })
+
+  test('se puede crear un parte con una fecha pasada', async ({
+    page,
+    context,
+    baseURL,
+    dbContext,
+  }) => {
+    const user = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'fecha-pasada@test.com',
+      password: 'TestPassword123!',
+      name: 'Fecha Pasada',
+      role: 'EMPLEADO',
+    })
+
+    await setAuthCookie(context, user.token)
+    await page.goto('/work-orders/new')
+
+    const yesterday = daysFromToday(-1)
+    const yesterdayDisplay = toDisplay(yesterday)
+
+    await page.locator('input[name="createdAt"]').fill(toYMD(yesterday))
+    await page.getByLabel(/cliente/i).fill('Cliente Pasado')
+    await page.getByLabel(/direccion/i).fill('Direccion Pasado')
+    await page.getByLabel(/descripcion/i).first().fill('Trabajo pasado')
+    await page.locator('input[name="tasks.0.startTime"]').fill('08:00')
+    await page.locator('input[name="tasks.0.endTime"]').fill('12:00')
+    await page.getByLabel(/nombre del tecnico/i).first().fill('Tecnico Pasado')
+    await page.locator('input[name="labor.0.entryTime"]').fill('08:00')
+    await page.locator('input[name="labor.0.exitTime"]').fill('12:00')
+
+    await page.getByRole('button', { name: /crear parte de trabajo/i }).click()
+
+    await expect(page).toHaveURL('/', { timeout: 10000 })
+    await expect(
+      page.getByRole('link', { name: 'Cliente Pasado' }).first()
+    ).toBeVisible()
+    await expect(page.getByText(yesterdayDisplay).first()).toBeVisible()
+  })
+
+  test('rechaza fechas futuras', async ({
+    page,
+    context,
+    baseURL,
+    dbContext,
+  }) => {
+    const user = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'fecha-futura@test.com',
+      password: 'TestPassword123!',
+      name: 'Fecha Futura',
+      role: 'EMPLEADO',
+    })
+
+    await setAuthCookie(context, user.token)
+    await page.goto('/work-orders/new')
+
+    await page.locator('input[name="createdAt"]').fill(toYMD(daysFromToday(1)))
+    await page.getByLabel(/cliente/i).fill('Cliente Futuro')
+    await page.getByLabel(/direccion/i).fill('Direccion Futura')
+    await page.getByLabel(/descripcion/i).first().fill('Trabajo futuro')
+    await page.locator('input[name="tasks.0.startTime"]').fill('08:00')
+    await page.locator('input[name="tasks.0.endTime"]').fill('12:00')
+    await page.getByLabel(/nombre del tecnico/i).first().fill('Tecnico Futuro')
+    await page.locator('input[name="labor.0.entryTime"]').fill('08:00')
+    await page.locator('input[name="labor.0.exitTime"]').fill('12:00')
+
+    await page.getByRole('button', { name: /crear parte de trabajo/i }).click()
+
+    await expect(page.getByText('La fecha no puede ser futura')).toBeVisible()
+    await expect(page).toHaveURL(/work-orders\/new/)
   })
 })

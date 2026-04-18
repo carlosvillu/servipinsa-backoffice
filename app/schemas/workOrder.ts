@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { todayYYYYMMDD } from '~/lib/dates'
 
 const workOrderTaskSchema = z.object({
   description: z.string().min(1, 'La descripcion es obligatoria'),
@@ -21,6 +22,12 @@ const workOrderMaterialSchema = z.object({
 
 export const workOrderFormSchema = z
   .object({
+    createdAt: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, 'Fecha invalida')
+      .refine((value) => value <= todayYYYYMMDD(), {
+        message: 'La fecha no puede ser futura',
+      }),
     client: z.string().min(1, 'El cliente es obligatorio'),
     address: z.string().min(1, 'La direccion es obligatoria'),
     carNumber: z.string(),
