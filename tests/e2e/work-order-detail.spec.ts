@@ -303,4 +303,43 @@ test.describe('Detalle de parte de trabajo', () => {
     // Should get 403 or be redirected
     expect(response?.status()).toBe(403)
   })
+
+  test('MANAGER puede ver el detalle de un parte de otro usuario', async ({
+    page,
+    context,
+    baseURL,
+    dbContext,
+  }) => {
+    const bob = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'bob-mgr-view@test.com',
+      password: 'TestPassword123!',
+      name: 'Bob MgrView',
+      role: 'EMPLEADO',
+    })
+
+    const manager = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'mgr-view@test.com',
+      password: 'TestPassword123!',
+      name: 'Manager View',
+      role: 'MANAGER',
+    })
+
+    const orderId = await seedWorkOrder(
+      dbContext,
+      'sampleOrder',
+      { createdBy: bob.userId },
+      { client: 'Cliente Bob MgrView' }
+    )
+
+    await seedWorkOrderTask(dbContext, 'sampleTask', { workOrderId: orderId })
+    await seedWorkOrderLabor(dbContext, 'sampleLabor', { workOrderId: orderId })
+
+    await setAuthCookie(context, manager.token)
+    const response = await page.goto(`/work-orders/${orderId}`)
+
+    expect(response?.status()).toBe(200)
+    await expect(
+      page.getByRole('heading', { name: 'Cliente Bob MgrView' })
+    ).toBeVisible()
+  })
 })

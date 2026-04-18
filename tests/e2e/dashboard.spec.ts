@@ -195,6 +195,60 @@ test.describe('Dashboard - Listado de partes', () => {
     await expect(page).toHaveURL(new RegExp(`/work-orders/${orderId}`), { timeout: 10000 })
   })
 
+  test('MANAGER ve conteo global combinando partes de múltiples usuarios', async ({
+    page,
+    context,
+    baseURL,
+    dbContext,
+  }) => {
+    const alice = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'alice-count@test.com',
+      password: 'TestPassword123!',
+      name: 'Alice Count',
+      role: 'EMPLEADO',
+    })
+    const bob = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'bob-count@test.com',
+      password: 'TestPassword123!',
+      name: 'Bob Count',
+      role: 'EMPLEADO',
+    })
+    const manager = await createAuthSessionWithRole(baseURL!, dbContext, {
+      email: 'manager-count@test.com',
+      password: 'TestPassword123!',
+      name: 'Manager Count',
+      role: 'MANAGER',
+    })
+
+    for (let i = 1; i <= 3; i++) {
+      await seedWorkOrder(dbContext, 'sampleOrder', { createdBy: alice.userId }, {
+        client: `Cliente Alice C${i}`,
+      })
+    }
+    for (let i = 1; i <= 3; i++) {
+      await seedWorkOrder(dbContext, 'sampleOrder', { createdBy: bob.userId }, {
+        client: `Cliente Bob C${i}`,
+      })
+    }
+    await seedWorkOrder(dbContext, 'sampleOrder', { createdBy: manager.userId }, {
+      client: 'Cliente Manager C1',
+    })
+
+    await setAuthCookie(context, manager.token)
+    await page.goto('/')
+
+    await expect(page.getByText('7 partes')).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: 'Cliente Alice C1' }).first()
+    ).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: 'Cliente Bob C1' }).first()
+    ).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: 'Cliente Manager C1' }).first()
+    ).toBeVisible()
+  })
+
   test('botón Nuevo Parte navega a creación', async ({
     page,
     context,
