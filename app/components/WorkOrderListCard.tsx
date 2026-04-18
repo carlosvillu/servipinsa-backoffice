@@ -42,7 +42,7 @@ export function WorkOrderListCard({
             onExport(item.id)
           }}
           disabled={isExporting}
-          aria-label="Exportar a Excel"
+          aria-label="Descargar PDF"
         >
           <Download size={16} />
         </Button>

@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useFetcher } from 'react-router'
 import {
-  generateWorkOrderExcel,
-  buildExcelFilename,
+  generateWorkOrderPdf,
+  buildPdfFilename,
   type WorkOrderExportData,
-} from '~/services/workOrderExcel'
+} from '~/services/workOrderPdf'
 import { downloadBlob } from '~/lib/download'
 
 export function useExportWorkOrder() {
@@ -13,8 +13,8 @@ export function useExportWorkOrder() {
   const exportWorkOrder = useCallback(async (data: WorkOrderExportData) => {
     setIsExporting(true)
     try {
-      const blob = await generateWorkOrderExcel(data)
-      downloadBlob(blob, buildExcelFilename(data.client, data.createdAt))
+      const blob = await generateWorkOrderPdf(data)
+      downloadBlob(blob, buildPdfFilename(data.client, data.createdAt))
     } finally {
       setIsExporting(false)
     }
@@ -43,11 +43,11 @@ export function useExportWorkOrderById() {
 
     const workOrder = (fetcher.data as { workOrder: WorkOrderExportData })
       .workOrder
-    generateWorkOrderExcel(workOrder)
+    generateWorkOrderPdf(workOrder)
       .then((blob) => {
         downloadBlob(
           blob,
-          buildExcelFilename(workOrder.client, workOrder.createdAt),
+          buildPdfFilename(workOrder.client, workOrder.createdAt),
         )
       })
       .finally(() => {
