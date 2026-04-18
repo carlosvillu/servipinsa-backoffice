@@ -218,4 +218,46 @@ test.describe('Descargar Todo - Export xlsx global', () => {
     expect(idxAlfa).toBeGreaterThan(-1)
     expect(idxZeta).toBeGreaterThan(idxAlfa)
   })
+
+  test('EMPLEADO sin partes no ve botón Descargar Todo aunque otros tengan partes', async ({
+    page,
+    context,
+    baseURL,
+    dbContext,
+  }) => {
+    const alice = await createAuthSession(baseURL!, {
+      email: 'alice-empty@test.com',
+      password: 'TestPassword123!',
+      name: 'Alice Empty',
+    })
+    const bob = await createAuthSession(baseURL!, {
+      email: 'bob-has@test.com',
+      password: 'TestPassword123!',
+      name: 'Bob Has',
+    })
+
+    const bobOrder = await seedWorkOrder(
+      dbContext,
+      'sampleOrder',
+      { createdBy: bob.userId },
+      { client: 'Cliente Bob Empty' }
+    )
+    await seedWorkOrderLabor(dbContext, 'sampleLabor', {
+      workOrderId: bobOrder,
+    })
+
+    await setAuthCookie(context, alice.token)
+    await page.goto('/')
+
+    await expect(
+      page.getByRole('heading', { name: 'Partes de Trabajo' })
+    ).toBeVisible()
+    await expect(page.getByText('0 partes')).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Descargar Todo' })
+    ).toHaveCount(0)
+    await expect(
+      page.getByRole('link', { name: 'Cliente Bob Empty' })
+    ).toHaveCount(0)
+  })
 })
