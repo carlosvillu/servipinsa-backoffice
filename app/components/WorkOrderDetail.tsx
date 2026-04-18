@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { DetailField } from '~/components/DetailField'
 import { DetailTable } from '~/components/DetailTable'
 import { formatDate } from '~/lib/dates'
+import { WORK_TYPE_LABELS, type WorkType } from '~/schemas/workOrder'
 
 type WorkOrderDetailData = {
   createdAt: string
@@ -11,7 +12,13 @@ type WorkOrderDetailData = {
   driverOut: string | null
   driverReturn: string | null
   creatorName: string
-  tasks: Array<{ description: string; startTime: string; endTime: string }>
+  tasks: Array<{
+    description: string
+    startTime: string
+    endTime: string
+    projectNumber: string | null
+    workType: WorkType | null
+  }>
   labor: Array<{
     technicianName: string
     entryTime: string
@@ -57,6 +64,15 @@ export function WorkOrderDetail({ data }: { data: WorkOrderDetailData }) {
           <DetailTable
             columns={[
               { header: 'Descripcion', render: (t) => t.description },
+              {
+                header: 'Numero de proyecto',
+                render: (t) => t.projectNumber || '—',
+                mono: true,
+              },
+              {
+                header: 'Tipo de trabajo',
+                render: (t) => (t.workType ? WORK_TYPE_LABELS[t.workType] : '—'),
+              },
               { header: 'Hora inicio', render: (t) => t.startTime, mono: true },
               { header: 'Hora fin', render: (t) => t.endTime, mono: true },
             ]}

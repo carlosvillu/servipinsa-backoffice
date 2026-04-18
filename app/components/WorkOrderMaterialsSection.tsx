@@ -1,4 +1,4 @@
-import type { Control, UseFieldArrayReturn } from 'react-hook-form'
+import { useFormState, type Control, type UseFieldArrayReturn } from 'react-hook-form'
 import type { WorkOrderFormData } from '~/schemas/workOrder'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import {
@@ -17,6 +17,14 @@ type Props = {
 }
 
 export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
+  const { errors } = useFormState({ control, name: 'materials' })
+  const materialsError = errors.materials
+  const rootMessages: string[] = []
+  if (materialsError && !Array.isArray(materialsError)) {
+    if (materialsError.root?.message) rootMessages.push(materialsError.root.message)
+    if (typeof materialsError.message === 'string') rootMessages.push(materialsError.message)
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -25,6 +33,11 @@ export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {rootMessages.map((msg, i) => (
+          <p key={i} data-slot="materials-error" className="text-destructive text-sm">
+            {msg}
+          </p>
+        ))}
         {fieldsArray.fields.length === 0 && (
           <p className="text-[#757575] font-sans text-sm">
             No hay materiales anadidos.

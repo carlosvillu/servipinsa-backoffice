@@ -65,6 +65,15 @@ export const FIXTURES = {
       description: 'Instalación de tubería',
       startTime: new Date('2026-03-29T08:00:00Z'),
       endTime: new Date('2026-03-29T12:00:00Z'),
+      projectNumber: '100/2026' as string | null,
+      workType: 'obra' as
+        | 'visita_tecnica'
+        | 'oficina'
+        | 'obra'
+        | 'punto_recarga'
+        | 'postventa'
+        | 'averia'
+        | null,
     },
   },
   workOrderLabor: {
@@ -78,7 +87,7 @@ export const FIXTURES = {
     sampleMaterial: {
       units: 10,
       description: 'Tubería PVC 110mm',
-      project: 'Proyecto A',
+      project: '100/2026',
       supply: 'Proveedor X',
     },
   },

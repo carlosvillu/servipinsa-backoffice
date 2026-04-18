@@ -108,6 +108,8 @@ function insertWorkOrderChildren(
         description: task.description,
         startTime: timeStringToDate(task.startTime),
         endTime: timeStringToDate(task.endTime),
+        projectNumber: task.projectNumber,
+        workType: task.workType,
       }))
     ),
     tx.insert(workOrderLabor).values(

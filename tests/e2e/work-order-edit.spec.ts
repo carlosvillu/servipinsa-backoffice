@@ -4,6 +4,7 @@ import {
   seedWorkOrder,
   seedWorkOrderTask,
   seedWorkOrderLabor,
+  seedWorkOrderMaterials,
   seedWorkOrderValidation,
 } from '../fixtures'
 import {
@@ -39,6 +40,9 @@ test.describe('Edicion de parte de trabajo', () => {
 
     await seedWorkOrderTask(dbContext, 'sampleTask', { workOrderId: orderId })
     await seedWorkOrderLabor(dbContext, 'sampleLabor', { workOrderId: orderId })
+    await seedWorkOrderMaterials(dbContext, 'sampleMaterial', {
+      workOrderId: orderId,
+    })
 
     await setAuthCookie(context, user.token)
     await page.goto(`/work-orders/${orderId}/edit`)
@@ -93,6 +97,9 @@ test.describe('Edicion de parte de trabajo', () => {
 
     await seedWorkOrderTask(dbContext, 'sampleTask', { workOrderId: orderId })
     await seedWorkOrderLabor(dbContext, 'sampleLabor', { workOrderId: orderId })
+    await seedWorkOrderMaterials(dbContext, 'sampleMaterial', {
+      workOrderId: orderId,
+    })
 
     await seedWorkOrderValidation(dbContext, {
       workOrderId: orderId,
@@ -142,6 +149,9 @@ test.describe('Edicion de parte de trabajo', () => {
 
     await seedWorkOrderTask(dbContext, 'sampleTask', { workOrderId: orderId })
     await seedWorkOrderLabor(dbContext, 'sampleLabor', { workOrderId: orderId })
+    await seedWorkOrderMaterials(dbContext, 'sampleMaterial', {
+      workOrderId: orderId,
+    })
 
     await setAuthCookie(context, alice.token)
     await page.goto(`/work-orders/${orderId}/edit`)
@@ -180,6 +190,9 @@ test.describe('Edicion de parte de trabajo', () => {
 
     await seedWorkOrderTask(dbContext, 'sampleTask', { workOrderId: orderId })
     await seedWorkOrderLabor(dbContext, 'sampleLabor', { workOrderId: orderId })
+    await seedWorkOrderMaterials(dbContext, 'sampleMaterial', {
+      workOrderId: orderId,
+    })
 
     await setAuthCookie(context, manager.token)
     await page.goto(`/work-orders/${orderId}/edit`)

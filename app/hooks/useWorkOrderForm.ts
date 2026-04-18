@@ -19,7 +19,15 @@ function buildEmptyDefaults(): WorkOrderFormData {
     carNumber: '',
     driverOut: '',
     driverReturn: '',
-    tasks: [{ description: '', startTime: '', endTime: '' }],
+    tasks: [
+      {
+        description: '',
+        startTime: '',
+        endTime: '',
+        projectNumber: '',
+        workType: 'visita_tecnica',
+      },
+    ],
     labor: [{ technicianName: '', entryTime: '', exitTime: '' }],
     materials: [],
   }

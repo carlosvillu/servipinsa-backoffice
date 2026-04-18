@@ -39,6 +39,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
         description: t.description,
         startTime: dateToTimeString(t.startTime),
         endTime: dateToTimeString(t.endTime),
+        projectNumber: t.projectNumber || '',
+        workType: t.workType || 'visita_tecnica',
       })),
       labor: workOrder.labor.map((l) => ({
         technicianName: l.technicianName,
