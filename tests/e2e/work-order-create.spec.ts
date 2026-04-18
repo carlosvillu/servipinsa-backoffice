@@ -51,7 +51,7 @@ test.describe('Creacion de partes de trabajo', () => {
     await page.locator('input[name="labor.0.entryTime"]').fill('08:00')
     await page.locator('input[name="labor.0.exitTime"]').fill('12:00')
 
-    // Anadir material asociado al proyecto
+    // Anadir material
     await page.getByRole('button', { name: /anadir material/i }).click()
     await page.locator('input[name="materials.0.units"]').fill('5')
     await page

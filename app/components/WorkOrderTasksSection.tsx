@@ -3,6 +3,7 @@ import {
   type WorkOrderFormData,
   WORK_TYPE_VALUES,
   WORK_TYPE_LABELS,
+  EMPTY_TASK,
 } from '~/schemas/workOrder'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import {
@@ -12,15 +13,8 @@ import {
   FormLabel,
   FormMessage,
 } from '~/components/ui/form'
-import { Input } from '~/components/ui/input'
+import { Input, inputClassName } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
-import { cn } from '~/lib/utils'
-
-const SELECT_CLASSES = cn(
-  'font-mono placeholder:text-[#757575] border-[#383838] h-9 w-full min-w-0 border bg-white px-4 py-2 text-base text-[#383838] outline-none md:text-sm',
-  'focus-visible:border-[#2BA5FF] focus-visible:ring-[#2BA5FF]/50 focus-visible:ring-2',
-  'aria-invalid:ring-destructive/20 aria-invalid:border-destructive',
-)
 
 type Props = {
   fieldsArray: UseFieldArrayReturn<WorkOrderFormData, 'tasks'>
@@ -74,7 +68,7 @@ export function WorkOrderTasksSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Tipo de trabajo</FormLabel>
                   <FormControl>
-                    <select className={SELECT_CLASSES} {...field}>
+                    <select className={inputClassName} {...field}>
                       {WORK_TYPE_VALUES.map((value) => (
                         <option key={value} value={value}>
                           {WORK_TYPE_LABELS[value]}
@@ -128,15 +122,7 @@ export function WorkOrderTasksSection({ fieldsArray, control }: Props) {
         <Button
           type="button"
           variant="outline"
-          onClick={() =>
-            fieldsArray.append({
-              description: '',
-              startTime: '',
-              endTime: '',
-              projectNumber: '',
-              workType: 'visita_tecnica',
-            })
-          }
+          onClick={() => fieldsArray.append(EMPTY_TASK)}
         >
           + Anadir Trabajo
         </Button>

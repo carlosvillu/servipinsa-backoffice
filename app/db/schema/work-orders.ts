@@ -8,15 +8,9 @@ import {
   pgEnum,
 } from 'drizzle-orm/pg-core'
 import { users } from './users'
+import { WORK_TYPE_VALUES } from '~/schemas/workOrder'
 
-export const workTypeEnum = pgEnum('work_type', [
-  'visita_tecnica',
-  'oficina',
-  'obra',
-  'punto_recarga',
-  'postventa',
-  'averia',
-])
+export const workTypeEnum = pgEnum('work_type', WORK_TYPE_VALUES)
 
 export const workOrders = pgTable('work_orders', {
   id: uuid('id').primaryKey().defaultRandom(),

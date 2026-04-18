@@ -1,3 +1,5 @@
+import type { WorkType } from '../../app/schemas/workOrder'
+
 // Minimal test fixtures for Servipinsa backoffice
 export const FIXTURES = {
   users: {
@@ -66,14 +68,7 @@ export const FIXTURES = {
       startTime: new Date('2026-03-29T08:00:00Z'),
       endTime: new Date('2026-03-29T12:00:00Z'),
       projectNumber: '100/2026' as string | null,
-      workType: 'obra' as
-        | 'visita_tecnica'
-        | 'oficina'
-        | 'obra'
-        | 'punto_recarga'
-        | 'postventa'
-        | 'averia'
-        | null,
+      workType: 'obra' as WorkType | null,
     },
   },
   workOrderLabor: {

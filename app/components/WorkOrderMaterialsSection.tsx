@@ -18,12 +18,10 @@ type Props = {
 
 export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
   const { errors } = useFormState({ control, name: 'materials' })
-  const materialsError = errors.materials
-  const rootMessages: string[] = []
-  if (materialsError && !Array.isArray(materialsError)) {
-    if (materialsError.root?.message) rootMessages.push(materialsError.root.message)
-    if (typeof materialsError.message === 'string') rootMessages.push(materialsError.message)
-  }
+  const rootMessage =
+    errors.materials && !Array.isArray(errors.materials)
+      ? errors.materials.root?.message ?? errors.materials.message
+      : undefined
 
   return (
     <Card>
@@ -33,11 +31,11 @@ export function WorkOrderMaterialsSection({ fieldsArray, control }: Props) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {rootMessages.map((msg, i) => (
-          <p key={i} data-slot="materials-error" className="text-destructive text-sm">
-            {msg}
+        {rootMessage && (
+          <p data-slot="materials-error" className="text-destructive text-sm">
+            {rootMessage}
           </p>
-        ))}
+        )}
         {fieldsArray.fields.length === 0 && (
           <p className="text-[#757575] font-sans text-sm">
             No hay materiales anadidos.

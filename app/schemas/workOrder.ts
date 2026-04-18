@@ -95,9 +95,7 @@ export const workOrderFormSchema = z
     })
 
     const taskProjects = new Set(
-      data.tasks
-        .map((t) => t.projectNumber)
-        .filter((p) => PROJECT_NUMBER_REGEX.test(p)),
+      data.tasks.map((t) => t.projectNumber).filter(Boolean),
     )
     const materialProjects = new Set(
       data.materials.map((m) => m.project).filter(Boolean),
@@ -114,3 +112,11 @@ export const workOrderFormSchema = z
   })
 
 export type WorkOrderFormData = z.infer<typeof workOrderFormSchema>
+
+export const EMPTY_TASK: WorkOrderFormData['tasks'][number] = {
+  description: '',
+  startTime: '',
+  endTime: '',
+  projectNumber: '',
+  workType: 'visita_tecnica',
+}

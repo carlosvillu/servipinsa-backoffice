@@ -175,7 +175,6 @@ test.describe('Trabajos realizados: numero de proyecto y tipo de trabajo', () =>
     await expect(
       page.getByRole('heading', { name: 'Cliente Legacy' }),
     ).toBeVisible()
-    // Las columnas nuevas existen pero con placeholder
     await expect(page.getByText('Numero de proyecto').first()).toBeVisible()
     await expect(page.getByText('Tipo de trabajo').first()).toBeVisible()
   })
