@@ -1,33 +1,11 @@
 import { formatDate } from '~/lib/dates'
-import { WORK_TYPE_LABELS, type WorkType } from '~/schemas/workOrder'
+import { WORK_TYPE_LABELS } from '~/schemas/workOrder'
+import {
+  buildExportFilename,
+  type WorkOrderExportData,
+} from '~/services/workOrderExport'
 
-export type WorkOrderExportData = {
-  client: string
-  address: string
-  carNumber: string | null
-  driverOut: string | null
-  driverReturn: string | null
-  creatorName: string
-  createdAt: string
-  tasks: Array<{
-    description: string
-    startTime: string
-    endTime: string
-    projectNumber: string | null
-    workType: WorkType | null
-  }>
-  labor: Array<{
-    technicianName: string
-    entryTime: string
-    exitTime: string
-  }>
-  materials: Array<{
-    units: number
-    description: string
-    project: string | null
-    supply: string | null
-  }>
-}
+export type { WorkOrderExportData }
 
 const HEADER_FILL = {
   type: 'pattern' as const,
@@ -129,10 +107,5 @@ export async function generateWorkOrderExcel(
 }
 
 export function buildExcelFilename(client: string, createdAt: string): string {
-  const sanitized = client
-    .replace(/[/\\:*?"<>|]/g, '')
-    .replace(/\s+/g, '-')
-    .toLowerCase()
-  const date = formatDate(createdAt).replace(/\//g, '-')
-  return `parte-${sanitized}-${date}.xlsx`
+  return buildExportFilename({ client, createdAt }, 'xlsx')
 }
