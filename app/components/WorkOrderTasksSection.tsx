@@ -68,7 +68,7 @@ export function WorkOrderTasksSection({ fieldsArray, control }: Props) {
                 <FormItem>
                   <FormLabel>Tipo de trabajo</FormLabel>
                   <FormControl>
-                    <select className={inputClassName} {...field}>
+                    <select className={`${inputClassName} py-0`} {...field}>
                       {WORK_TYPE_VALUES.map((value) => (
                         <option key={value} value={value}>
                           {WORK_TYPE_LABELS[value]}
