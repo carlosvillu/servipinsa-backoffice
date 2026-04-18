@@ -55,6 +55,15 @@ export default [
       },
     },
   },
+  {
+    files: ['**/*.mjs', 'scripts/**/*.{js,mjs}'],
+    languageOptions: {
+      sourceType: 'module',
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
   prettier,
   {
     ignores: ['node_modules/', 'build/', '.react-router/', 'playwright-report/'],

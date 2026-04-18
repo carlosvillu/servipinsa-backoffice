@@ -5,6 +5,7 @@ import { authClient } from '~/lib/auth.client'
 import { Button } from '~/components/ui/button'
 import { UserDropdown } from '~/components/UserDropdown'
 import { MobileSidebar } from '~/components/MobileSidebar'
+import { InstallButton } from '~/components/InstallButton'
 import type { Session, User } from '~/lib/auth'
 
 type HeaderProps = {
@@ -36,6 +37,7 @@ export function Header({ session, user }: HeaderProps) {
 
           {/* Auth Section */}
           <div className="flex items-center gap-3">
+            <InstallButton />
             {session && user ? (
               <>
                 <button
