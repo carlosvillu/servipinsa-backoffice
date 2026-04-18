@@ -1,11 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useFetcher } from 'react-router'
 import {
-  generateWorkOrderExcel,
-  buildExcelFilename,
+  generateWorkOrderPdf,
+  buildPdfFilename,
   type WorkOrderExportData,
-} from '~/services/workOrderExcel'
+} from '~/services/workOrderPdf'
 import { downloadBlob } from '~/lib/download'
+
+async function downloadWorkOrderPdf(data: WorkOrderExportData) {
+  const blob = await generateWorkOrderPdf(data)
+  downloadBlob(blob, buildPdfFilename(data))
+}
 
 export function useExportWorkOrder() {
   const [isExporting, setIsExporting] = useState(false)
@@ -13,8 +18,7 @@ export function useExportWorkOrder() {
   const exportWorkOrder = useCallback(async (data: WorkOrderExportData) => {
     setIsExporting(true)
     try {
-      const blob = await generateWorkOrderExcel(data)
-      downloadBlob(blob, buildExcelFilename(data.client, data.createdAt))
+      await downloadWorkOrderPdf(data)
     } finally {
       setIsExporting(false)
     }
@@ -26,40 +30,27 @@ export function useExportWorkOrder() {
 export function useExportWorkOrderById() {
   const fetcher = useFetcher({ key: 'export-work-order' })
   const lastProcessedData = useRef<unknown>(null)
-  const [isExporting, setIsExporting] = useState(false)
   const [exportingId, setExportingId] = useState<string | null>(null)
+  const isExporting = exportingId !== null
 
   useEffect(() => {
     if (fetcher.state !== 'idle' || !fetcher.data) return
     if (fetcher.data === lastProcessedData.current) return
-    if (
-      typeof fetcher.data !== 'object' ||
-      !('workOrder' in fetcher.data)
-    ) {
+    if (typeof fetcher.data !== 'object' || !('workOrder' in fetcher.data)) {
       return
     }
 
     lastProcessedData.current = fetcher.data
 
-    const workOrder = (fetcher.data as { workOrder: WorkOrderExportData })
-      .workOrder
-    generateWorkOrderExcel(workOrder)
-      .then((blob) => {
-        downloadBlob(
-          blob,
-          buildExcelFilename(workOrder.client, workOrder.createdAt),
-        )
-      })
-      .finally(() => {
-        setIsExporting(false)
-        setExportingId(null)
-      })
+    const { workOrder } = fetcher.data as { workOrder: WorkOrderExportData }
+    downloadWorkOrderPdf(workOrder).finally(() => {
+      setExportingId(null)
+    })
   }, [fetcher.state, fetcher.data])
 
   const exportById = useCallback(
     (id: string) => {
       setExportingId(id)
-      setIsExporting(true)
       lastProcessedData.current = null
       fetcher.load(`/work-orders/${id}`)
     },

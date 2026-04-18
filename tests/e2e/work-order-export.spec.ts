@@ -5,12 +5,12 @@ import {
 } from '../helpers/auth'
 import { resetDatabase } from '../helpers/db'
 
-test.describe('Export - Botón de exportar en listado', () => {
+test.describe('Export - Botón de descargar PDF en listado', () => {
   test.beforeEach(async ({ dbContext }) => {
     await resetDatabase(dbContext)
   })
 
-  test('botón exportar en fila es clickeable sin navegar al detalle', async ({
+  test('botón descargar PDF en fila es clickeable sin navegar al detalle', async ({
     page,
     context,
     baseURL,
@@ -36,7 +36,7 @@ test.describe('Export - Botón de exportar en listado', () => {
 
     await expect(page.getByRole('heading', { name: 'Partes de Trabajo' })).toBeVisible()
 
-    const exportButton = page.getByRole('button', { name: 'Exportar a Excel' })
+    const exportButton = page.getByRole('button', { name: 'Descargar PDF' })
     await expect(exportButton).toBeVisible()
     await exportButton.click()
 

@@ -41,7 +41,7 @@ export function WorkOrderListRow({
           size="icon-sm"
           onClick={() => onExport(item.id)}
           disabled={isExporting}
-          aria-label="Exportar a Excel"
+          aria-label="Descargar PDF"
         >
           <Download size={16} />
         </Button>
