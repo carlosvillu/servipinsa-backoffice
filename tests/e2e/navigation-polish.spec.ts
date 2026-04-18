@@ -82,11 +82,23 @@ test.describe('Navegacion mobile y polish', () => {
     await page.getByLabel(/cliente/i).fill('Cliente Toast')
     await page.getByLabel(/direccion/i).fill('Direccion Toast')
     await page.getByLabel(/descripcion/i).first().fill('Trabajo toast')
+    await page
+      .locator('input[name="tasks.0.projectNumber"]')
+      .fill('100/2026')
     await page.locator('input[name="tasks.0.startTime"]').fill('08:00')
     await page.locator('input[name="tasks.0.endTime"]').fill('12:00')
     await page.getByLabel(/nombre del tecnico/i).first().fill('Tecnico Toast')
     await page.locator('input[name="labor.0.entryTime"]').fill('08:00')
     await page.locator('input[name="labor.0.exitTime"]').fill('12:00')
+
+    await page.getByRole('button', { name: /anadir material/i }).click()
+    await page.locator('input[name="materials.0.units"]').fill('1')
+    await page
+      .locator('input[name="materials.0.description"]')
+      .fill('Material toast')
+    await page
+      .locator('input[name="materials.0.project"]')
+      .fill('100/2026')
 
     await page.getByRole('button', { name: /crear parte de trabajo/i }).click()
 
@@ -186,11 +198,23 @@ test.describe('Navegacion mobile y polish', () => {
     await page.getByLabel(/cliente/i).fill('Cliente Loading')
     await page.getByLabel(/direccion/i).fill('Direccion Loading')
     await page.getByLabel(/descripcion/i).first().fill('Trabajo loading')
+    await page
+      .locator('input[name="tasks.0.projectNumber"]')
+      .fill('600/2026')
     await page.locator('input[name="tasks.0.startTime"]').fill('08:00')
     await page.locator('input[name="tasks.0.endTime"]').fill('12:00')
     await page.getByLabel(/nombre del tecnico/i).first().fill('Tecnico Loading')
     await page.locator('input[name="labor.0.entryTime"]').fill('08:00')
     await page.locator('input[name="labor.0.exitTime"]').fill('12:00')
+
+    await page.getByRole('button', { name: /anadir material/i }).click()
+    await page.locator('input[name="materials.0.units"]').fill('1')
+    await page
+      .locator('input[name="materials.0.description"]')
+      .fill('Material loading')
+    await page
+      .locator('input[name="materials.0.project"]')
+      .fill('600/2026')
 
     // Click submit and check loading state immediately
     const submitButton = page.getByRole('button', { name: /crear parte de trabajo/i })

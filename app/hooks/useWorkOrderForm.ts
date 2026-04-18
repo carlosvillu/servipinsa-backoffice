@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSubmit, useNavigation } from 'react-router'
 import {
   workOrderFormSchema,
+  EMPTY_TASK,
   type WorkOrderFormData,
 } from '~/schemas/workOrder'
 import { todayYYYYMMDD } from '~/lib/dates'
@@ -19,7 +20,7 @@ function buildEmptyDefaults(): WorkOrderFormData {
     carNumber: '',
     driverOut: '',
     driverReturn: '',
-    tasks: [{ description: '', startTime: '', endTime: '' }],
+    tasks: [EMPTY_TASK],
     labor: [{ technicianName: '', entryTime: '', exitTime: '' }],
     materials: [],
   }

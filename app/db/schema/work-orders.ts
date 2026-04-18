@@ -1,5 +1,16 @@
-import { pgTable, uuid, text, timestamp, integer, unique } from 'drizzle-orm/pg-core'
+import {
+  pgTable,
+  uuid,
+  text,
+  timestamp,
+  integer,
+  unique,
+  pgEnum,
+} from 'drizzle-orm/pg-core'
 import { users } from './users'
+import { WORK_TYPE_VALUES } from '~/schemas/workOrder'
+
+export const workTypeEnum = pgEnum('work_type', WORK_TYPE_VALUES)
 
 export const workOrders = pgTable('work_orders', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -22,6 +33,8 @@ export const workOrderTasks = pgTable('work_order_tasks', {
   description: text('description').notNull(),
   startTime: timestamp('start_time'),
   endTime: timestamp('end_time'),
+  projectNumber: text('project_number'),
+  workType: workTypeEnum('work_type'),
 })
 
 export const workOrderLabor = pgTable('work_order_labor', {

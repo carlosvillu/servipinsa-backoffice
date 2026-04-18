@@ -1,4 +1,5 @@
 import { formatDate } from '~/lib/dates'
+import { WORK_TYPE_LABELS, type WorkType } from '~/schemas/workOrder'
 
 export type WorkOrderExportData = {
   client: string
@@ -8,7 +9,13 @@ export type WorkOrderExportData = {
   driverReturn: string | null
   creatorName: string
   createdAt: string
-  tasks: Array<{ description: string; startTime: string; endTime: string }>
+  tasks: Array<{
+    description: string
+    startTime: string
+    endTime: string
+    projectNumber: string | null
+    workType: WorkType | null
+  }>
   labor: Array<{
     technicianName: string
     entryTime: string
@@ -74,11 +81,21 @@ export async function generateWorkOrderExcel(
   const tasks = workbook.addWorksheet('Trabajos Realizados')
   tasks.columns = [
     { header: 'Descripcion', key: 'description', width: 40 },
+    { header: 'Numero de proyecto', key: 'projectNumber', width: 20 },
+    { header: 'Tipo de trabajo', key: 'workType', width: 20 },
     { header: 'Hora inicio', key: 'startTime', width: 14 },
     { header: 'Hora fin', key: 'endTime', width: 14 },
   ]
-  data.tasks.forEach((t) => tasks.addRow(t))
-  styleHeaderRow(tasks, 3)
+  data.tasks.forEach((t) =>
+    tasks.addRow({
+      description: t.description,
+      projectNumber: t.projectNumber ?? '',
+      workType: t.workType ? WORK_TYPE_LABELS[t.workType] : '',
+      startTime: t.startTime,
+      endTime: t.endTime,
+    }),
+  )
+  styleHeaderRow(tasks, 5)
 
   const labor = workbook.addWorksheet('Mano de Obra')
   labor.columns = [

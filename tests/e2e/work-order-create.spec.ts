@@ -37,6 +37,12 @@ test.describe('Creacion de partes de trabajo', () => {
 
     // Trabajo
     await page.getByLabel(/descripcion/i).first().fill('Instalacion electrica')
+    await page
+      .locator('input[name="tasks.0.projectNumber"]')
+      .fill('100/2026')
+    await page
+      .locator('select[name="tasks.0.workType"]')
+      .selectOption('obra')
     await page.locator('input[name="tasks.0.startTime"]').fill('08:00')
     await page.locator('input[name="tasks.0.endTime"]').fill('12:00')
 
@@ -51,6 +57,9 @@ test.describe('Creacion de partes de trabajo', () => {
     await page
       .locator('input[name="materials.0.description"]')
       .fill('Cable 2.5mm')
+    await page
+      .locator('input[name="materials.0.project"]')
+      .fill('100/2026')
 
     // Submit
     await page.getByRole('button', { name: /crear parte de trabajo/i }).click()
@@ -170,6 +179,9 @@ test.describe('Creacion de partes de trabajo', () => {
 
     // Trabajo con hora fin anterior a hora inicio
     await page.getByLabel(/descripcion/i).first().fill('Trabajo test')
+    await page
+      .locator('input[name="tasks.0.projectNumber"]')
+      .fill('200/2026')
     await page.locator('input[name="tasks.0.startTime"]').fill('14:00')
     await page.locator('input[name="tasks.0.endTime"]').fill('08:00')
 
@@ -208,12 +220,24 @@ test.describe('Creacion de partes de trabajo', () => {
     await page.getByLabel(/direccion/i).fill('Direccion Manager')
 
     await page.getByLabel(/descripcion/i).first().fill('Trabajo manager')
+    await page
+      .locator('input[name="tasks.0.projectNumber"]')
+      .fill('300/2026')
     await page.locator('input[name="tasks.0.startTime"]').fill('09:00')
     await page.locator('input[name="tasks.0.endTime"]').fill('13:00')
 
     await page.getByLabel(/nombre del tecnico/i).first().fill('Tecnico Mgr')
     await page.locator('input[name="labor.0.entryTime"]').fill('09:00')
     await page.locator('input[name="labor.0.exitTime"]').fill('13:00')
+
+    await page.getByRole('button', { name: /anadir material/i }).click()
+    await page.locator('input[name="materials.0.units"]').fill('1')
+    await page
+      .locator('input[name="materials.0.description"]')
+      .fill('Material manager')
+    await page
+      .locator('input[name="materials.0.project"]')
+      .fill('300/2026')
 
     await page.getByRole('button', { name: /crear parte de trabajo/i }).click()
 
@@ -272,11 +296,23 @@ test.describe('Creacion de partes de trabajo', () => {
     await page.getByLabel(/cliente/i).fill('Cliente Pasado')
     await page.getByLabel(/direccion/i).fill('Direccion Pasado')
     await page.getByLabel(/descripcion/i).first().fill('Trabajo pasado')
+    await page
+      .locator('input[name="tasks.0.projectNumber"]')
+      .fill('400/2026')
     await page.locator('input[name="tasks.0.startTime"]').fill('08:00')
     await page.locator('input[name="tasks.0.endTime"]').fill('12:00')
     await page.getByLabel(/nombre del tecnico/i).first().fill('Tecnico Pasado')
     await page.locator('input[name="labor.0.entryTime"]').fill('08:00')
     await page.locator('input[name="labor.0.exitTime"]').fill('12:00')
+
+    await page.getByRole('button', { name: /anadir material/i }).click()
+    await page.locator('input[name="materials.0.units"]').fill('1')
+    await page
+      .locator('input[name="materials.0.description"]')
+      .fill('Material pasado')
+    await page
+      .locator('input[name="materials.0.project"]')
+      .fill('400/2026')
 
     await page.getByRole('button', { name: /crear parte de trabajo/i }).click()
 
@@ -307,9 +343,20 @@ test.describe('Creacion de partes de trabajo', () => {
     await page.getByLabel(/cliente/i).fill('Cliente Futuro')
     await page.getByLabel(/direccion/i).fill('Direccion Futura')
     await page.getByLabel(/descripcion/i).first().fill('Trabajo futuro')
+    await page
+      .locator('input[name="tasks.0.projectNumber"]')
+      .fill('500/2026')
     await page.locator('input[name="tasks.0.startTime"]').fill('08:00')
     await page.locator('input[name="tasks.0.endTime"]').fill('12:00')
     await page.getByLabel(/nombre del tecnico/i).first().fill('Tecnico Futuro')
+    await page.getByRole('button', { name: /anadir material/i }).click()
+    await page.locator('input[name="materials.0.units"]').fill('1')
+    await page
+      .locator('input[name="materials.0.description"]')
+      .fill('Material futuro')
+    await page
+      .locator('input[name="materials.0.project"]')
+      .fill('500/2026')
     await page.locator('input[name="labor.0.entryTime"]').fill('08:00')
     await page.locator('input[name="labor.0.exitTime"]').fill('12:00')
 

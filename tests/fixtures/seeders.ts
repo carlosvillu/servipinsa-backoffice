@@ -84,6 +84,17 @@ export async function createAuthSchema(ctx: DbContext): Promise<void> {
     )`
   )
 
+  // Create work_type enum (idempotent)
+  await executeSQL(
+    ctx,
+    `DO $$ BEGIN
+      CREATE TYPE work_type AS ENUM (
+        'visita_tecnica', 'oficina', 'obra',
+        'punto_recarga', 'postventa', 'averia'
+      );
+    EXCEPTION WHEN duplicate_object THEN null; END $$`
+  )
+
   // Create work_order_tasks table
   await executeSQL(
     ctx,
@@ -92,7 +103,9 @@ export async function createAuthSchema(ctx: DbContext): Promise<void> {
       work_order_id UUID NOT NULL REFERENCES work_orders(id) ON DELETE CASCADE,
       description TEXT NOT NULL,
       start_time TIMESTAMP,
-      end_time TIMESTAMP
+      end_time TIMESTAMP,
+      project_number TEXT,
+      work_type work_type
     )`
   )
 
@@ -233,10 +246,17 @@ export async function seedWorkOrderTask(
   const data = { ...FIXTURES.workOrderTasks[key], ...overrides }
   const result = await executeSQL(
     ctx,
-    `INSERT INTO work_order_tasks (work_order_id, description, start_time, end_time)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO work_order_tasks (work_order_id, description, start_time, end_time, project_number, work_type)
+     VALUES ($1, $2, $3, $4, $5, $6)
      RETURNING id`,
-    [relations.workOrderId, data.description, data.startTime, data.endTime]
+    [
+      relations.workOrderId,
+      data.description,
+      data.startTime,
+      data.endTime,
+      data.projectNumber ?? null,
+      data.workType ?? null,
+    ]
   )
   return result.rows[0].id
 }
