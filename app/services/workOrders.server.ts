@@ -1,4 +1,4 @@
-import { eq, desc, count, sql } from 'drizzle-orm'
+import { eq, desc, asc, count, sql } from 'drizzle-orm'
 import { db } from '~/db'
 import {
   workOrders,
@@ -22,6 +22,46 @@ export type WorkOrderListItem = {
   address: string
   createdBy: string
   validationCount: number
+}
+
+export type WorkOrderLaborRow = {
+  date: string
+  technicianName: string
+  entryTime: string
+  exitTime: string
+}
+
+export type ListAllWorkOrderLaborRowsParams = {
+  userId: string
+  role: UserRole
+}
+
+export async function listAllWorkOrderLaborRows(
+  params: ListAllWorkOrderLaborRowsParams
+): Promise<WorkOrderLaborRow[]> {
+  const { userId, role } = params
+  const whereClause =
+    role === 'EMPLEADO' ? eq(workOrders.createdBy, userId) : undefined
+
+  const baseQuery = db
+    .select({
+      createdAt: workOrders.createdAt,
+      technicianName: workOrderLabor.technicianName,
+      entryTime: workOrderLabor.entryTime,
+      exitTime: workOrderLabor.exitTime,
+    })
+    .from(workOrders)
+    .innerJoin(workOrderLabor, eq(workOrders.id, workOrderLabor.workOrderId))
+    .orderBy(desc(workOrders.createdAt), asc(workOrderLabor.technicianName))
+
+  const rows = await (whereClause ? baseQuery.where(whereClause) : baseQuery)
+
+  return rows.map((r) => ({
+    date: r.createdAt.toISOString(),
+    technicianName: r.technicianName,
+    entryTime: dateToTimeString(r.entryTime),
+    exitTime: dateToTimeString(r.exitTime),
+  }))
 }
 
 export type ListWorkOrdersParams = {

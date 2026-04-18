@@ -20,7 +20,7 @@ const HEADER_FONT = {
   size: 11,
 }
 
-function styleHeaderRow(
+export function styleHeaderRow(
   sheet: import('exceljs').Worksheet,
   colCount: number,
 ) {
