@@ -36,7 +36,7 @@ export function WorkOrderForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="space-y-8">
+      <form onSubmit={onSubmit} noValidate className="space-y-8">
         <Card>
           <CardHeader>
             <CardTitle className="font-mono text-xl uppercase">
